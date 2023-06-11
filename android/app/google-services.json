@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:237907804029:android:5d1af39c996abf854cd614",
+        "mobilesdk_app_id": "1:237907804029:android:c9155f2c17613a834cd614",
         "android_client_info": {
-          "package_name": "com.example.social_dex"
+          "package_name": "com.socialdex.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "237907804029-n56fcdq1l8rcerk77fama0q72pkq1hnv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socialdex.app",
+            "certificate_hash": "e1ea4f346ab6e1d7da8f5c35ea3bb065f9258d40"
+          }
+        },
         {
           "client_id": "237907804029-3aaa1gu290569rr4v6perhmjd0nh2ffv.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +37,13 @@
             {
               "client_id": "237907804029-3aaa1gu290569rr4v6perhmjd0nh2ffv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "237907804029-75iejbla0lkobncucepgine2ahglabp3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.social-dex.app"
+              }
             }
           ]
         }

@@ -1,4 +1,4 @@
-package com.example.social_dex
+package com.socialdex.app
 
 import io.flutter.embedding.android.FlutterActivity
 

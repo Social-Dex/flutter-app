@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>237907804029-hav4ekfmsev2vpfk440r1k171t6c3gcp.apps.googleusercontent.com</string>
+	<string>237907804029-75iejbla0lkobncucepgine2ahglabp3.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.237907804029-hav4ekfmsev2vpfk440r1k171t6c3gcp</string>
+	<string>com.googleusercontent.apps.237907804029-75iejbla0lkobncucepgine2ahglabp3</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBLaKO_eUaTfCWbLKXCmbfJP5Zof1nE6wo</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.socialDex</string>
+	<string>com.social-dex.app</string>
 	<key>PROJECT_ID</key>
 	<string>social-dex-6c9e8</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:237907804029:ios:087b606a6d86849c4cd614</string>
+	<string>1:237907804029:ios:eaa10fb1ef2d2bea4cd614</string>
 </dict>
 </plist>

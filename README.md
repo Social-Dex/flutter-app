@@ -1,4 +1,4 @@
-# social_dex
+# app
 
 A new Flutter project.
 

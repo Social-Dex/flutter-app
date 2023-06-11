@@ -45,17 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAkFJ63iaBffZ4qjdbzZ8riwoUOwVxMxPw',
-    appId: '1:237907804029:web:9ce6df2af67d9c144cd614',
+    appId: '1:237907804029:web:a1a52b089fe6a1bd4cd614',
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     authDomain: 'social-dex-6c9e8.firebaseapp.com',
     storageBucket: 'social-dex-6c9e8.appspot.com',
-    measurementId: 'G-Y7HFLZZLXE',
+    measurementId: 'G-J2XML3MYHR',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBO8iqotjk9MoIHpulsPGM6eNNQ9oEZl7Y',
-    appId: '1:237907804029:android:5d1af39c996abf854cd614',
+    appId: '1:237907804029:android:c9155f2c17613a834cd614',
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     storageBucket: 'social-dex-6c9e8.appspot.com',
@@ -63,21 +63,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBLaKO_eUaTfCWbLKXCmbfJP5Zof1nE6wo',
-    appId: '1:237907804029:ios:087b606a6d86849c4cd614',
+    appId: '1:237907804029:ios:eaa10fb1ef2d2bea4cd614',
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     storageBucket: 'social-dex-6c9e8.appspot.com',
-    iosClientId: '237907804029-hav4ekfmsev2vpfk440r1k171t6c3gcp.apps.googleusercontent.com',
-    iosBundleId: 'com.example.socialDex',
+    iosClientId: '237907804029-75iejbla0lkobncucepgine2ahglabp3.apps.googleusercontent.com',
+    iosBundleId: 'com.social-dex.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBLaKO_eUaTfCWbLKXCmbfJP5Zof1nE6wo',
-    appId: '1:237907804029:ios:e2d63b437451dfde4cd614',
+    appId: '1:237907804029:ios:332c5da567bbab104cd614',
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     storageBucket: 'social-dex-6c9e8.appspot.com',
-    iosClientId: '237907804029-dfl8frc1mif5oamo96b5ec7cre9o4ral.apps.googleusercontent.com',
-    iosBundleId: 'com.example.socialDex.RunnerTests',
+    iosClientId: '237907804029-qe5jl61bjiaeh5pk692qa5qbgnuac837.apps.googleusercontent.com',
+    iosBundleId: 'com.social-dex.app.RunnerTests',
   );
 }
