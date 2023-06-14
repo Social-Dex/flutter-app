@@ -1,3 +1,5 @@
+import 'package:app/routes.dart';
+import 'package:app/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -30,7 +32,14 @@ class _AppState extends State<App> {
       future: _initialization,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('error');
+          return Text(snapshot.error.toString());
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            routes: appRoutes,
+            theme: appTheme,
+          );
         }
 
         return const Text('loading');
