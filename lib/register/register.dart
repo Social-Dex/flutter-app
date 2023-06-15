@@ -1,5 +1,8 @@
+import 'package:app/register/bday_picker.dart';
+import 'package:app/services/auth.dart';
 import 'package:app/services/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_holo_date_picker/date_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,11 +18,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final cName = TextEditingController();
 
+  final cEmail = TextEditingController();
+  final cPassword = TextEditingController();
+
+  String email = '';
+  String password = '';
+
   @override
   initState() {
     super.initState();
     cName.addListener(() {
       userData.name = cName.text;
+    });
+    cEmail.addListener(() {
+      email = cEmail.text;
+    });
+    cPassword.addListener(() {
+      password = cPassword.text;
     });
   }
 
@@ -27,6 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     super.dispose();
     cName.dispose();
+    cEmail.dispose();
+    cPassword.dispose();
   }
 
   @override
@@ -34,7 +51,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final List<Widget> inputSreens = <Widget>[
       NameScreen(cName: cName),
       const BirthDateScreen(),
-      const CredentialsScreen(),
+      CredentialsScreen(
+        cEmail: cEmail,
+        cPassword: cPassword,
+      ),
+      const AGBsScreen(),
     ];
 
     return Scaffold(
@@ -90,6 +111,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   if (_curScreen == inputSreens.length) return;
+
+                  if (_curScreen == 3) {
+                    // Credentials Screen
+                    AuthService()
+                        .createUserWithEmail(email: email, password: password);
+                  }
                   setState(() {
                     _curScreen++;
                   });
@@ -139,6 +166,7 @@ class NameScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
           child: TextFormField(
+            keyboardType: TextInputType.name,
             controller: cName,
             textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
@@ -173,26 +201,47 @@ class BirthDateScreen extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 60, left: 30, right: 30),
             child: Text(
-              'We need this information to verify your age. It will also be visible to other users',
+              'Please tell us when you were born.',
             ),
           ),
         ),
         Spacer(),
         Padding(
           padding: EdgeInsets.only(bottom: 30, left: 40, right: 40),
-          child: Row(
-            children: [
-              // TODO create fancy dialer YYYY-MM-DD
-            ],
-          ),
+          child: BDayPicker(),
         ),
+        Spacer(),
       ],
     );
   }
 }
 
-class CredentialsScreen extends StatelessWidget {
-  const CredentialsScreen({super.key});
+class CredentialsScreen extends StatefulWidget {
+  final TextEditingController cEmail;
+  final TextEditingController cPassword;
+
+  const CredentialsScreen({
+    super.key,
+    required this.cEmail,
+    required this.cPassword,
+  });
+
+  @override
+  State<CredentialsScreen> createState() =>
+      // ignore: no_logic_in_create_state
+      _CredentialsScreenState(cEmail, cPassword);
+}
+
+class _CredentialsScreenState extends State<CredentialsScreen> {
+  _CredentialsScreenState(
+    this.cEmail,
+    this.cPassword,
+  );
+
+  final TextEditingController cEmail;
+  final TextEditingController cPassword;
+
+  bool _isPasswordVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +259,8 @@ class CredentialsScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
           child: TextFormField(
+            controller: cEmail,
+            keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               labelText: 'Email',
             ),
@@ -219,15 +270,32 @@ class CredentialsScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
           child: TextFormField(
-            obscureText: true,
-            decoration: const InputDecoration(
+            controller: cPassword,
+            obscureText: !_isPasswordVisible,
+            decoration: InputDecoration(
               labelText: 'Password',
+              suffixIcon: Icon(
+                  _isPasswordVisible ? Icons.visibility_off : Icons.visibility),
             ),
             maxLines: 1,
+            onTap: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
           ),
         ),
         const Spacer(),
       ],
     );
+  }
+}
+
+class AGBsScreen extends StatelessWidget {
+  const AGBsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

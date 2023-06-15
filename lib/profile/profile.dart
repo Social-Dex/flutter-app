@@ -1,3 +1,4 @@
+import 'package:app/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -5,8 +6,13 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Icon(Icons.person_2_outlined),
+    return Center(
+      child: ElevatedButton(
+        child: const Text('Log out'),
+        onPressed: () {
+          AuthService().signOut();
+        },
+      ),
     );
   }
 }

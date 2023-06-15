@@ -4,16 +4,18 @@ class AuthService {
   final userStream = FirebaseAuth.instance.authStateChanges();
   final user = FirebaseAuth.instance.currentUser;
 
-  Future<void> createUserWithEmail(String email, String password) async {
+  Future<void> createUserWithEmail({String email = '', String password = ''}) async {
     try {
     FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    } on FirebaseAuthException catch (err) {}
+    } on FirebaseAuthException catch (err) {
+      print(err);
+    }
   }
 
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail({String email = '', String password = ''}) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
