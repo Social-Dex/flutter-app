@@ -1,0 +1,58 @@
+{
+  "name": "Name",
+  "@name": {
+    "description": "First name of user"
+  },
+  "email": "Email",
+  "@email": {
+    "descripiton": "email address"
+  },
+  "password": "Password",
+  "@password": {
+    "descripiton": "user password"
+  },
+  "logIn": "Log in",
+  "@logIn": {
+    "descripiton": "log in to account"
+  },
+  "logOut": "Log out",
+  "@logOut": {
+    "descripiton": "log out of account"
+  },
+  "logInInstead": "Log in instead",
+  "@logInInstead": {
+    "descripiton": "Button for when the user already has an account"
+  },
+  "btnBack": "< Back",
+  "@btnBack": {
+    "descripiton": "Button to go back to previous screen"
+  },
+  "btnNext": "Next >",
+  "@btnNext": {
+    "descripiton": "Button to go to next screen"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "descripiton": "Last button to press after process"
+  },
+  "registerHelpTextName": "This is how you will appear to other users.",
+  "@registerHelpTextName": {
+    "description": "Registration help text for name screen"
+  },
+  "registerHelpTextBDay": "Please tell us when you were born.",
+  "@registerHelpTextBDay": {
+    "description": "Registration help text for birthday"
+  },
+  "registerHelpTextCredentials": "Please fill in your credentials to create your account.",
+  "@registerHelpTextCredentials": {
+    "description": "Registration help text for email & password screen"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "descripiton": "user profile"
+  },
+  "map": "Map",
+  "@map": {
+    "descripiton": "map to view other users"
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "logIn": "Anmelden",
+    "logOut": "Abmelden",
+    "logInInstead": "Stattdessen anmelden",
+    "btnBack": "< Zurück",
+    "btnNext": "Weiter >",
+    "finish": "Fertig",
+    "registerHelpTextName": "So wirst du anderen Nutzern angezeigt.",
+    "registerHelpTextBDay": "Bitte sag uns, wann du geboren bist.",
+    "registerHelpTextCredentials": "Bitte ausfüllen, um dein Profil anzulegen.",
+    "profile": "Profil",
+    "map": "Karte"
+}

@@ -1,17 +1,49 @@
 import 'package:flutter/material.dart';
 
-class BDayPicker extends StatelessWidget {
-  const BDayPicker({super.key});
+class BDayPicker extends StatefulWidget {
+  final TextEditingController cYear;
+  final TextEditingController cMonth;
+  final TextEditingController cDay;
+
+  const BDayPicker({
+    super.key,
+    required this.cYear,
+    required this.cMonth,
+    required this.cDay,
+  });
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<BDayPicker> createState() => _BDayPickerState(cYear, cMonth, cDay);
+}
+
+class _BDayPickerState extends State<BDayPicker> {
+  final TextEditingController cYear;
+  final TextEditingController cMonth;
+  final TextEditingController cDay;
+
+  _BDayPickerState(this.cYear, this.cMonth, this.cDay);
+
+  final FocusNode fnMonth = FocusNode();
+  final FocusNode fnDay = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    fnMonth.dispose();
+    fnDay.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
-        NumberField(hintText: 'YYYY'),
-        Separator(),
-        NumberField(hintText: 'MM'),
-        Separator(),
-        NumberField(hintText: 'DD'),
+        NumberField(hintText: 'YYYY', nextField: fnMonth),
+        const Separator(),
+        NumberField(hintText: 'MM', focusNode: fnMonth, nextField: fnDay),
+        const Separator(),
+        NumberField(hintText: 'DD', focusNode: fnDay),
       ],
     );
   }
@@ -19,25 +51,28 @@ class BDayPicker extends StatelessWidget {
 
 class NumberField extends StatelessWidget {
   final String hintText;
+  final FocusNode? focusNode;
+  final FocusNode? nextField;
 
   const NumberField({
     super.key,
     required this.hintText,
+    this.focusNode,
+    this.nextField,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: TextField(
+        focusNode: focusNode,
         maxLines: 1,
         maxLength: hintText.length,
         keyboardType: TextInputType.datetime,
         textAlign: TextAlign.center,
         onChanged: (value) {
-          if (value.length == hintText.length) {
-            // TODO set focus on next field
-          } else if (value.isEmpty) {
-            // TODO set input on prev field
+          if (nextField != null && value.length == hintText.length) {
+            nextField!.requestFocus();
           }
         },
         decoration: InputDecoration(
@@ -55,13 +90,11 @@ class Separator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
+    return Expanded(
       child: Text(
         '-',
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 18,
-        ),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

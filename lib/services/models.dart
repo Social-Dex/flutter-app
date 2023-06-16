@@ -24,9 +24,9 @@ class User {
 }
 
 class SimpleDate {
-  late final int year;
-  late final int month;
-  late final int day;
+  int year = 1970;
+  int month = 01;
+  int day = 01;
 
   SimpleDate({
     this.year = 1970,
@@ -34,7 +34,7 @@ class SimpleDate {
     this.day = 1,
   });
 
-  SimpleDate.fromString(String? date) {
+  SimpleDate.fromString({String? date = '1970-01-01'}) {
     date = date ?? '1970-01-01';
     final regex = RegExp(r'(\d+)-(\d+)-(\d+)');
 

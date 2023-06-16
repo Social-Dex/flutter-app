@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/connections/connections.dart';
 import 'package:app/map/map.dart';
 import 'package:app/profile/profile.dart';
@@ -30,16 +31,16 @@ class _OverviewScreenState extends State<OverviewScreen> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
-            label: 'Profile',
+            icon: const Icon(Icons.person_2_outlined),
+            label: AppLocalizations.of(context)!.profile,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.map_outlined),
-            label: 'Map',
+            icon: const Icon(Icons.map_outlined),
+            label: AppLocalizations.of(context)!.map,
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_outlined),
             label: 'Social-Dex',
           ),

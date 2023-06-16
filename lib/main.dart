@@ -1,17 +1,17 @@
 import 'package:app/routes.dart';
 import 'package:app/theme.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
-      home: Directionality(
-        textDirection: TextDirection.ltr,
-        child: App(),
-      ),
+      title: 'Social-Dex',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: App(),
     ),
   );
 }
