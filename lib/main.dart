@@ -37,8 +37,11 @@ class _AppState extends State<App> {
 
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
+            title: 'Social-Dex',
             routes: appRoutes,
             theme: appTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
           );
         }
 
