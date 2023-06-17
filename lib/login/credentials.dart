@@ -14,21 +14,19 @@ class CredentialsScreen extends StatefulWidget {
   });
 
   @override
-  State<CredentialsScreen> createState() =>
-      // ignore: no_logic_in_create_state
-      _CredentialsScreenState(cEmail, cPassword, helpText);
+  State<CredentialsScreen> createState() => _CredentialsScreenState();
 }
 
 class _CredentialsScreenState extends State<CredentialsScreen> {
-  _CredentialsScreenState(
-    this.cEmail,
-    this.cPassword,
-    this.helpText,
-  );
+  // _CredentialsScreenState(
+  //   this.cEmail,
+  //   this.cPassword,
+  //   this.helpText,
+  // );
 
-  final TextEditingController cEmail;
-  final TextEditingController cPassword;
-  final String? helpText;
+  // final TextEditingController cEmail;
+  // final TextEditingController cPassword;
+  // final String? helpText;
 
   bool _isPasswordVisible = true;
 
@@ -40,15 +38,15 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
           child: Padding(
             padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
             child: Text(
-              helpText ?? '',
+              widget.helpText ?? '',
             ),
           ),
         ),
-        helpText != null && helpText!.isNotEmpty ? const Spacer() : Container(),
+        widget.helpText != null && widget.helpText!.isNotEmpty ? const Spacer() : Container(),
         Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
           child: TextFormField(
-            controller: cEmail,
+            controller: widget.cEmail,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context)!.email,
@@ -59,7 +57,7 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
         Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
           child: TextFormField(
-            controller: cPassword,
+            controller: widget.cPassword,
             obscureText: !_isPasswordVisible,
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context)!.password,

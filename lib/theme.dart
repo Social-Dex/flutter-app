@@ -7,6 +7,8 @@ var appTheme = ThemeData(
   textTheme: const TextTheme(
     bodyLarge: TextStyle(
       fontSize: 18,
+      color: Colors.teal,
+      fontWeight: FontWeight.bold,
     ),
     bodyMedium: TextStyle(
       fontSize: 16,
@@ -66,5 +68,8 @@ var appTheme = ThemeData(
   ),
   outlinedButtonTheme: const OutlinedButtonThemeData(
     style: ButtonStyle(),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: Colors.teal,
   ),
 );

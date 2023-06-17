@@ -46,7 +46,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.teal,
         onTap: _onItemTapped,
       ),
     );

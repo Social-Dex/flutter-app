@@ -11,6 +11,7 @@
     "registerHelpTextName": "So wirst du anderen Nutzern angezeigt.",
     "registerHelpTextBDay": "Bitte sag uns, wann du geboren bist.",
     "registerHelpTextCredentials": "Bitte ausfüllen, um dein Profil anzulegen.",
+    "nameCantBeEmpty": "Name darf nicht leer sein",
     "profile": "Profil",
     "map": "Karte"
 }

@@ -18,11 +18,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int _curScreen = 1;
 
   final cName = TextEditingController();
+  bool isValidName = true; // TODO false setzen
 
   final TextEditingController cYear = TextEditingController();
   final TextEditingController cMonth = TextEditingController();
   final TextEditingController cDay = TextEditingController();
   final SimpleDate birthDate = SimpleDate();
+  bool isValidDate = false;
 
   final cEmail = TextEditingController();
   final cPassword = TextEditingController();
@@ -35,15 +37,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     cName.addListener(() {
       userData.name = cName.text;
+      
+      setState(() {
+        isValidName = _validateName(context, userData.name) == null;
+      });
     });
     cYear.addListener(() {
-      birthDate.year = cYear.text as int;
+      birthDate.year = _getSanitizedDateInput(4, cYear.text);
+      setState(() {
+        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+      });
     });
     cMonth.addListener(() {
-      birthDate.month = cMonth.text as int;
+      birthDate.month = _getSanitizedDateInput(2, cMonth.text);
+      setState(() {
+        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+      });
     });
     cDay.addListener(() {
-      birthDate.day = cDay.text as int;
+      birthDate.day = _getSanitizedDateInput(2, cDay.text);
+      setState(() {
+        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+      });
     });
     cEmail.addListener(() {
       email = cEmail.text;
@@ -51,6 +66,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     cPassword.addListener(() {
       password = cPassword.text;
     });
+  }
+
+  int _getSanitizedDateInput(int length, String? value) {
+    if (value == null || value.isEmpty) {
+      return 1;
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+      return 1;
+    }
+
+    if (value.toString().length > length) {
+      return int.parse(value.substring(0, length));
+    }
+
+    return int.parse(value);
   }
 
   @override
@@ -88,14 +119,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               padding: const EdgeInsets.only(left: 20),
               child: Row(children: [
                 Text(
-                  '${cName.text} $_curScreen ',
+                  '$_curScreen ',
                 ),
                 Text(
                   '/ ${inputSreens.length}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ]),
             ),
@@ -103,12 +131,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Visibility(
               visible: _curScreen != 1,
               child: ElevatedButton(
-                style: _curScreen == 1
-                    ? const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.grey),
-                        overlayColor: MaterialStatePropertyAll(Colors.grey),
-                      )
-                    : null,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(AppLocalizations.of(context)!.btnBack),
@@ -125,6 +147,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Visibility(
               visible: _curScreen != inputSreens.length,
               child: ElevatedButton(
+                style: (_curScreen == 1 && isValidName ||
+                      _curScreen == 2 && isValidDate)
+                    ? null
+                    : const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.grey),
+                      overlayColor: MaterialStatePropertyAll(Colors.grey),
+                    ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(AppLocalizations.of(context)!.btnNext),
@@ -132,10 +161,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () {
                   if (_curScreen == inputSreens.length) return;
 
-                  if (_curScreen == 3) {
-                    // Credentials Screen
-                    AuthService()
-                        .createUserWithEmail(email: email, password: password);
+                  switch (_curScreen) {
+                    case 1:
+                      if (!isValidName) return;
+                      break;
+                    case 2:
+                      if (!isValidDate) return;
+                      break;
                   }
                   setState(() {
                     _curScreen++;
@@ -152,6 +184,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onPressed: () {
                   if (_curScreen != inputSreens.length) return;
+
+                  AuthService()
+                      .createUserWithEmail(email: email, password: password);
                 },
               ),
             ),
@@ -194,6 +229,10 @@ class NameScreen extends StatelessWidget {
             ),
             maxLength: 20,
             maxLines: 1,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (String? value) {
+              return _validateName(context, value ?? '');
+            },
           ),
         ),
         TextButton(
@@ -208,6 +247,14 @@ class NameScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+String? _validateName(BuildContext context, String value) {
+  // if (value.isEmpty) {
+  //   return AppLocalizations.of(context)!.nameCantBeEmpty;
+  // }
+  // TODO einkommentieren
+  return null;
 }
 
 class BirthDateScreen extends StatelessWidget {
@@ -247,6 +294,18 @@ class BirthDateScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+String? _validateYear(BuildContext context, String value) {
+  return null;
+}
+
+String? _validateMonth(BuildContext context, String value) {
+  return null;
+}
+
+String? _validateDay(BuildContext context, String value) {
+  return null;
 }
 
 class AGBsScreen extends StatelessWidget {

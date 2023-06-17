@@ -47,6 +47,10 @@
   "@registerHelpTextCredentials": {
     "description": "Registration help text for email & password screen"
   },
+  "nameCantBeEmpty": "Name can't be empty",
+  "@nameCantBeEmpty": {
+    "description": "Name validation error"
+  },
   "profile": "Profile",
   "@profile": {
     "descripiton": "user profile"
