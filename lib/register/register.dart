@@ -3,6 +3,7 @@ import 'package:app/login/credentials.dart';
 import 'package:app/register/bday_picker.dart';
 import 'package:app/services/auth.dart';
 import 'package:app/services/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,17 +20,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final cName = TextEditingController();
   bool isValidName = true; // TODO false setzen
+  bool acceptedTAC = true; // TODO false setzen
+  void _onTACChanged(bool value) {
+    setState(() {
+      acceptedTAC = value;
+    });
+  }
 
   final TextEditingController cYear = TextEditingController();
   final TextEditingController cMonth = TextEditingController();
   final TextEditingController cDay = TextEditingController();
   final SimpleDate birthDate = SimpleDate();
-  bool isValidDate = false;
+  bool isValidDate = true; // TODO false setzen
 
   final cEmail = TextEditingController();
   final cPassword = TextEditingController();
   String email = '';
   String password = '';
+  bool areValidCredentials = true; // TODO false setzen
 
   @override
   initState() {
@@ -37,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     cName.addListener(() {
       userData.name = cName.text;
-      
+
       setState(() {
         isValidName = _validateName(context, userData.name) == null;
       });
@@ -45,19 +53,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     cYear.addListener(() {
       birthDate.year = _getSanitizedDateInput(4, cYear.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
       });
     });
     cMonth.addListener(() {
       birthDate.month = _getSanitizedDateInput(2, cMonth.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
       });
     });
     cDay.addListener(() {
       birthDate.day = _getSanitizedDateInput(2, cDay.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(birthDate) == '';
+        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
       });
     });
     cEmail.addListener(() {
@@ -99,14 +107,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> inputSreens = <Widget>[
-      NameScreen(cName: cName),
+      NameScreen(cName: cName, initAccept: acceptedTAC, onTACChanged: _onTACChanged),
       BirthDateScreen(cYear: cYear, cMonth: cMonth, cDay: cDay),
       CredentialsScreen(
         cEmail: cEmail,
         cPassword: cPassword,
         helpText: AppLocalizations.of(context)!.registerHelpTextCredentials,
       ),
-      const AGBsScreen(),
     ];
 
     return Scaffold(
@@ -136,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Text(AppLocalizations.of(context)!.btnBack),
                 ),
                 onPressed: () {
-                  if (_curScreen == 1) return;
+                  if (_curScreen == Screens.name) return;
                   setState(() {
                     _curScreen--;
                   });
@@ -147,13 +154,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Visibility(
               visible: _curScreen != inputSreens.length,
               child: ElevatedButton(
-                style: (_curScreen == 1 && isValidName ||
-                      _curScreen == 2 && isValidDate)
+                style: (_curScreen == Screens.name && isValidName && acceptedTAC ||
+                        _curScreen == Screens.birthdate && isValidDate ||
+                        _curScreen == Screens.credentials &&
+                            areValidCredentials)
                     ? null
                     : const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.grey),
-                      overlayColor: MaterialStatePropertyAll(Colors.grey),
-                    ),
+                        backgroundColor: MaterialStatePropertyAll(Colors.grey),
+                        overlayColor: MaterialStatePropertyAll(Colors.grey),
+                      ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(AppLocalizations.of(context)!.btnNext),
@@ -162,10 +171,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (_curScreen == inputSreens.length) return;
 
                   switch (_curScreen) {
-                    case 1:
+                    case Screens.name:
                       if (!isValidName) return;
                       break;
-                    case 2:
+                    case Screens.birthdate:
                       if (!isValidDate) return;
                       break;
                   }
@@ -197,16 +206,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-class NameScreen extends StatelessWidget {
+class Screens {
+  static const int name = 1;
+  static const int birthdate = 2;
+  static const int credentials = 3;
+  static const int codex = 4;
+}
+
+class NameScreen extends StatefulWidget {
   final TextEditingController cName;
+  final bool initAccept;
+  final Function(bool value) onTACChanged;
 
   const NameScreen({
     super.key,
     required this.cName,
+    required this.initAccept,
+    required this.onTACChanged,
   });
 
   @override
+  State<NameScreen> createState() => _NameScreenState();
+}
+
+class _NameScreenState extends State<NameScreen> {
+  bool acceptedTAC = false;
+
+  @override
   Widget build(BuildContext context) {
+    acceptedTAC = widget.initAccept;
+
     return Column(
       children: [
         Center(
@@ -219,10 +248,10 @@ class NameScreen extends StatelessWidget {
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
+          padding: const EdgeInsets.only(bottom: 10, left: 40, right: 40),
           child: TextFormField(
             keyboardType: TextInputType.name,
-            controller: cName,
+            controller: widget.cName,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context)!.name,
@@ -244,16 +273,46 @@ class NameScreen extends StatelessWidget {
           ),
         ),
         const Spacer(),
+        Row(
+          children: [
+            const Spacer(),
+            Checkbox(
+              value: acceptedTAC,
+              onChanged: (bool? isChecked) {
+                setState(() {
+                  acceptedTAC = isChecked ?? false;
+                });
+                widget.onTACChanged(isChecked ?? false);
+              },
+            ),
+            Text(
+              AppLocalizations.of(context)!.iAcceptThe,
+              textAlign: TextAlign.center,
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.termsAndConditions),
+              onPressed: () async {
+                // TODO link to AGBs
+                var url = Uri.parse('https://social-dex.com');
+                if (!await canLaunchUrl(url)) {
+                  // TODO message
+                  return;
+                }
+                await launchUrl(url);
+              },
+            ),
+            const Spacer(),
+          ],
+        ),
       ],
     );
   }
 }
 
 String? _validateName(BuildContext context, String value) {
-  // if (value.isEmpty) {
-  //   return AppLocalizations.of(context)!.nameCantBeEmpty;
-  // }
-  // TODO einkommentieren
+  if (value.isEmpty) {
+    return AppLocalizations.of(context)!.nameCantBeEmpty;
+  }
   return null;
 }
 
@@ -296,23 +355,3 @@ class BirthDateScreen extends StatelessWidget {
   }
 }
 
-String? _validateYear(BuildContext context, String value) {
-  return null;
-}
-
-String? _validateMonth(BuildContext context, String value) {
-  return null;
-}
-
-String? _validateDay(BuildContext context, String value) {
-  return null;
-}
-
-class AGBsScreen extends StatelessWidget {
-  const AGBsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

@@ -35,7 +35,7 @@ var appTheme = ThemeData(
     displaySmall: TextStyle(),
     titleLarge: TextStyle(),
     titleMedium: TextStyle(
-      fontSize: 22,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
       letterSpacing: 1.4,
       color: Colors.teal,
@@ -68,6 +68,10 @@ var appTheme = ThemeData(
   ),
   outlinedButtonTheme: const OutlinedButtonThemeData(
     style: ButtonStyle(),
+  ),
+  checkboxTheme: const CheckboxThemeData(
+    fillColor: MaterialStatePropertyAll(Colors.deepPurple),
+    checkColor: MaterialStatePropertyAll(Colors.black38),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: Colors.teal,

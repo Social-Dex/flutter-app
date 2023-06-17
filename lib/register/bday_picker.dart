@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/services/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,25 +15,25 @@ class BDayPicker extends StatefulWidget {
     required this.cDay,
   });
 
-  static String getValidationError(SimpleDate date) {
+  static String getValidationError(BuildContext context, SimpleDate date) {
     var realDate = DateTime(date.year, date.month, date.day);
 
     if (date.year != realDate.year ||
         date.month != realDate.month ||
         date.day != realDate.day) {
-      return 'Invalid date';
+      return AppLocalizations.of(context)!.invalidDate;
     }
 
     var now = DateTime.now();
     Duration diff = now.difference(realDate);
 
     if (diff.isNegative) {
-      return 'Invalid date';
+      return AppLocalizations.of(context)!.invalidDate;
     }
 
     // = 120 years
     if (diff.inDays >= 43800) {
-      return 'You\'re not that old';
+      return AppLocalizations.of(context)!.notThatOld;
     }
 
     String datePattern = "yyyy-MM-dd";
@@ -45,7 +46,7 @@ class BDayPicker extends StatefulWidget {
     );
 
     if (!adultDate.isBefore(now)) {
-      return 'You must be at least 18 years old!';
+      return AppLocalizations.of(context)!.mustBe18;
     }
 
     return '';
@@ -180,17 +181,17 @@ class _ErrorTextState extends State<ErrorText> {
     widget.cYear.addListener(() {
       String value = widget.cYear.text;
       date.year = _getSanitizedInput(4, value);
-      _setErrorText(BDayPicker.getValidationError(date));
+      _setErrorText(BDayPicker.getValidationError(context, date));
     });
     widget.cMonth.addListener(() {
       String value = widget.cMonth.text;
       date.month = _getSanitizedInput(2, value);
-      _setErrorText(BDayPicker.getValidationError(date));
+      _setErrorText(BDayPicker.getValidationError(context, date));
     });
     widget.cDay.addListener(() {
       String value = widget.cDay.text;
       date.day = _getSanitizedInput(2, value);
-      _setErrorText(BDayPicker.getValidationError(date));
+      _setErrorText(BDayPicker.getValidationError(context, date));
     });
   }
 
@@ -201,7 +202,7 @@ class _ErrorTextState extends State<ErrorText> {
 
     if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
       setState(() {
-        errorText = 'Invalid';
+        errorText = AppLocalizations.of(context)!.invalid;
       });
       return 1;
     }

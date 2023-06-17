@@ -45,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text(AppLocalizations.of(context)!.logIn),
               onPressed: () {
                 AuthService().signInWithEmail(email: email, password: password);
+                Navigator.pop(context);
               },
             ),
           ],

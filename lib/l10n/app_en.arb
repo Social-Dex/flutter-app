@@ -3,6 +3,14 @@
   "@name": {
     "description": "First name of user"
   },
+  "iAcceptThe": "I accept the",
+  "@iAcceptThe": {
+    "description": "Start of sentence for accepting the terms and conditions"
+  },
+  "termsAndConditions": "Terms and Conditions",
+  "@termsAndConditions": {
+    "description": "Link to the terms and conditions of the app"
+  },
   "email": "Email",
   "@email": {
     "descripiton": "email address"
@@ -10,6 +18,26 @@
   "password": "Password",
   "@password": {
     "descripiton": "user password"
+  },
+  "tooShort": "Too short",
+  "@tooShort": {
+    "descripiton": "Input is too short"
+  },
+  "invalid": "Invalid",
+  "@invalid": {
+    "descripiton": "Invalid input"
+  },
+  "invalidDate": "Invalid date",
+  "@invalidDate": {
+    "descripiton": "Invalid date input"
+  },
+  "notThatOld": "You're not that old",
+  "@notThatOld": {
+    "descripiton": "Date input too far in the past"
+  },
+  "mustBe18": "You must be at least 18 years old!",
+  "@mustBe18": {
+    "descripiton": "Users must be 18 years old or older to use the app"
   },
   "logIn": "Log in",
   "@logIn": {
