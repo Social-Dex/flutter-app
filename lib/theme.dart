@@ -33,7 +33,10 @@ var appTheme = ThemeData(
       
     ),
     displaySmall: TextStyle(),
-    titleLarge: TextStyle(),
+    titleLarge: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
     titleMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,

@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
 @JsonSerializable()
-class User {
+class UserData {
   String name;
   String birthDay;
   bool isInRelationship;
@@ -10,7 +10,7 @@ class User {
   String gender;
   String description;
 
-  User({
+  UserData({
     this.name = '',
     this.birthDay = '1970-01-01',
     this.isInRelationship = false,
@@ -19,8 +19,8 @@ class User {
     this.description = '',
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
+  Map<String, dynamic> toJson() => _$UserDataToJson(this);
 }
 
 class SimpleDate {

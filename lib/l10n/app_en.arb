@@ -59,6 +59,22 @@
   "@btnNext": {
     "descripiton": "Button to go to next screen"
   },
+  "accept": "Accept",
+  "@accept": {
+    "descripiton": "Button to accept"
+  },
+  "codexRespect": "Respect everyone in the community",
+  "@codexRespect": {
+    "descripiton": "Community guidline about respect"
+  },
+  "codexPrivacy": "Only share what you want other users to see",
+  "@codexPrivacy": {
+    "descripiton": "Comminity guidline about personal privacy"
+  },
+  "codexAuthenticity": "Be authentic and honest",
+  "@codexAuthenticity": {
+    "descripiton": "Community guidline about authenticity"
+  },
   "finish": "Finish",
   "@finish": {
     "descripiton": "Last button to press after process"
@@ -78,6 +94,38 @@
   "nameCantBeEmpty": "Name can't be empty",
   "@nameCantBeEmpty": {
     "description": "Name validation error"
+  },
+  "exceptionNetworkRequestFailed": "A connection issue has occured. Please make sure that you have a stable connection to the internet.",
+  "@exceptionNetworkRequestFailed": {
+    "description": "Exception thrown on network error"
+  },
+  "exceptionAccountAlreadyExists": "Account already exists",
+  "@exceptionAccountAlreadyExists": {
+    "description": "Exception thrown when trying to create account with already existing credentials"
+  },
+  "exceptionInvalidEmail": "Invalid email address",
+  "@exceptionInvalidEmail": {
+    "description": "Exception thrown when using an invalid email format"
+  },
+  "exceptionWeakPassword": "Weak password",
+  "@exceptionWeakPassword": {
+    "description": "Exception thrown when using a weak password"
+  },
+  "exceptionUserDisabled": "User account is disabled",
+  "@exceptionUserDisabled": {
+    "description": "Exception thrown when user account has been disabled"
+  },
+  "exceptionUserNotFound": "User not found",
+  "@exceptionUserNotFound": {
+    "description": "Exception thrown when user account is not found in backend"
+  },
+  "exceptionWrongPassword": "Password is not correct",
+  "@exceptionWrongPassword": {
+    "description": "Exception thrown when trying to log in with wrong password"
+  },
+  "unexpectedErrorOccured": "An unexpected error occurred",
+  "@unexpectedErrorOccured": {
+    "description": "Default error message"
   },
   "profile": "Profile",
   "@profile": {
