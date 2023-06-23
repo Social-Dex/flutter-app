@@ -1,11 +1,15 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:app/login/credentials.dart';
-import 'package:app/register/bday_picker.dart';
-import 'package:app/services/models.dart';
-import 'package:loader_overlay/loader_overlay.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:app/register/screens.dart';
+import 'package:app/register/name.dart';
+import 'package:app/register/bday.dart';
+import 'package:app/register/date_picker.dart';
+import 'package:app/register/codex.dart';
+import 'package:app/login/credentials.dart';
+import 'package:app/services/firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app/services/models.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,7 +19,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final userData = UserData();
+  final userProfile = UserProfile();
 
   int _curScreen = 1;
 
@@ -31,7 +35,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             width: (MediaQuery.of(context).size.width / Screens.total) - 5,
             decoration: _curScreen >= i + 1
                 ? BoxDecoration(
-                    color: Colors.teal,
+                    color: _isScreenComplete(_curScreen) || _curScreen > i + 1
+                        ? Colors.teal
+                        : Colors.transparent,
+                    border: Border.all(
+                      width: 2,
+                      color: Colors.teal,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   )
                 : BoxDecoration(
@@ -50,9 +60,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return indicator;
   }
 
+  bool _isScreenComplete(int screen) {
+    switch (screen) {
+      case Screens.name:
+        return isValidName && acceptedTAC;
+      case Screens.birthdate:
+        return isValidDate &&
+            cYear.text.isNotEmpty &&
+            cMonth.text.isNotEmpty &&
+            cDay.text.isNotEmpty;
+      case Screens.codex:
+        return true;
+      case Screens.credentials:
+        return areValidCredentials;
+    }
+
+    return false;
+  }
+
   final cName = TextEditingController();
-  bool isValidName = true; // TODO false setzen
-  bool acceptedTAC = true; // TODO false setzen
+  bool isValidName = false;
+  bool acceptedTAC = false;
   void _onTACChanged(bool value) {
     setState(() {
       acceptedTAC = value;
@@ -63,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController cMonth = TextEditingController();
   final TextEditingController cDay = TextEditingController();
   final SimpleDate birthDate = SimpleDate();
-  bool isValidDate = true; // TODO false setzen
+  bool isValidDate = false;
 
   final cEmail = TextEditingController();
   final cPassword = TextEditingController();
@@ -79,28 +107,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.initState();
 
     cName.addListener(() {
-      userData.name = cName.text;
+      userProfile.name = cName.text;
 
       setState(() {
-        isValidName = _validateName(context, userData.name) == null;
+        isValidName = validateName(context, userProfile.name) == null;
       });
     });
     cYear.addListener(() {
-      birthDate.year = _getSanitizedDateInput(4, cYear.text);
+      birthDate.year = SimpleDate.getSanitizedDateInput(4, cYear.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
+        isValidDate = DatePicker.getValidationError(context, birthDate) == '';
       });
     });
     cMonth.addListener(() {
-      birthDate.month = _getSanitizedDateInput(2, cMonth.text);
+      birthDate.month = SimpleDate.getSanitizedDateInput(2, cMonth.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
+        isValidDate = DatePicker.getValidationError(context, birthDate) == '';
       });
     });
     cDay.addListener(() {
-      birthDate.day = _getSanitizedDateInput(2, cDay.text);
+      birthDate.day = SimpleDate.getSanitizedDateInput(2, cDay.text);
       setState(() {
-        isValidDate = BDayPicker.getValidationError(context, birthDate) == '';
+        isValidDate = DatePicker.getValidationError(context, birthDate) == '';
       });
     });
     cEmail.addListener(() {
@@ -126,22 +154,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         credentialsError = '';
       });
     });
-  }
-
-  int _getSanitizedDateInput(int length, String? value) {
-    if (value == null || value.isEmpty) {
-      return 1;
-    }
-
-    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-      return 1;
-    }
-
-    if (value.toString().length > length) {
-      return int.parse(value.substring(0, length));
-    }
-
-    return int.parse(value);
   }
 
   @override
@@ -223,12 +235,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 visible: _curScreen != inputSreens.length,
                 child: ElevatedButton(
                   style: (_curScreen == Screens.name &&
-                              isValidName &&
-                              acceptedTAC ||
-                          _curScreen == Screens.birthdate && isValidDate ||
-                          _curScreen == Screens.codex ||
+                              _isScreenComplete(Screens.name) ||
+                          _curScreen == Screens.birthdate &&
+                              _isScreenComplete(Screens.birthdate) ||
+                          _curScreen == Screens.codex &&
+                              _isScreenComplete(Screens.codex) ||
                           _curScreen == Screens.credentials &&
-                              areValidCredentials)
+                              _isScreenComplete(Screens.credentials))
                       ? null
                       : const ButtonStyle(
                           backgroundColor:
@@ -282,7 +295,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     try {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                              email: email.toLowerCase(), password: password);
+                              email: email.toLowerCase(), password: password)
+                          .then((value) async {
+                        userProfile.birthday = birthDate.toString();
+
+                        await FirestoreService()
+                            .updateUserProfile(userProfile)
+                            .then((value) {
+                          context.loaderOverlay.hide();
+                        });
+                      });
                     } on FirebaseAuthException catch (e) {
                       setState(() {
                         switch (e.code) {
@@ -309,207 +331,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         context.loaderOverlay.hide();
                       });
-
-                      // TODO send name and bday as well
                     }
                   },
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class Screens {
-  static const int name = 1;
-  static const int birthdate = 2;
-  static const int codex = 3;
-  static const int credentials = 4;
-
-  static const int total = 4;
-}
-
-class NameScreen extends StatefulWidget {
-  final TextEditingController cName;
-  final bool initAccept;
-  final Function(bool value) onTACChanged;
-
-  const NameScreen({
-    super.key,
-    required this.cName,
-    required this.initAccept,
-    required this.onTACChanged,
-  });
-
-  @override
-  State<NameScreen> createState() => _NameScreenState();
-}
-
-class _NameScreenState extends State<NameScreen> {
-  bool acceptedTAC = false;
-
-  @override
-  Widget build(BuildContext context) {
-    acceptedTAC = widget.initAccept;
-
-    return Column(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
-            child: Text(
-              AppLocalizations.of(context)!.registerHelpTextName,
-            ),
-          ),
-        ),
-        const Spacer(),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 40, right: 40),
-          child: TextFormField(
-            keyboardType: TextInputType.name,
-            controller: widget.cName,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.name,
-            ),
-            maxLength: 20,
-            maxLines: 1,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (String? value) {
-              return _validateName(context, value ?? '');
-            },
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/login');
-          },
-          child: Text(
-            AppLocalizations.of(context)!.logInInstead,
-          ),
-        ),
-        const Spacer(),
-        Row(
-          children: [
-            const Spacer(),
-            Checkbox(
-              value: acceptedTAC,
-              onChanged: (bool? isChecked) {
-                setState(() {
-                  acceptedTAC = isChecked ?? false;
-                });
-                widget.onTACChanged(isChecked ?? false);
-              },
-            ),
-            Text(
-              AppLocalizations.of(context)!.iAcceptThe,
-              textAlign: TextAlign.center,
-            ),
-            TextButton(
-              child: Text(AppLocalizations.of(context)!.termsAndConditions),
-              onPressed: () async {
-                context.loaderOverlay.show();
-                // TODO link to AGBs
-                var url = Uri.parse('https://social-dex.com');
-                if (!await canLaunchUrl(url)) {
-                  // TODO message
-                  return;
-                }
-                await launchUrl(url);
-                // ignore: use_build_context_synchronously
-                context.loaderOverlay.hide();
-              },
-            ),
-            const Spacer(),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-String? _validateName(BuildContext context, String value) {
-  if (value.isEmpty) {
-    return AppLocalizations.of(context)!.nameCantBeEmpty;
-  }
-  return null;
-}
-
-class BirthDateScreen extends StatelessWidget {
-  final TextEditingController cYear;
-  final TextEditingController cMonth;
-  final TextEditingController cDay;
-
-  const BirthDateScreen({
-    super.key,
-    required this.cYear,
-    required this.cMonth,
-    required this.cDay,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
-            child: Text(
-              AppLocalizations.of(context)!.registerHelpTextBDay,
-            ),
-          ),
-        ),
-        const Spacer(),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40),
-          child: BDayPicker(
-            cYear: cYear,
-            cMonth: cMonth,
-            cDay: cDay,
-          ),
-        ),
-        const Spacer(),
-      ],
-    );
-  }
-}
-
-class CodexScreen extends StatelessWidget {
-  const CodexScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        child: Column(
-          children: [
-            const Spacer(),
-            Expanded(
-              child: Text(
-                '✌️ ${AppLocalizations.of(context)!.codexRespect}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                '🕵️ ${AppLocalizations.of(context)!.codexPrivacy}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                '😇 ${AppLocalizations.of(context)!.codexAuthenticity}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-          ],
         ),
       ),
     );

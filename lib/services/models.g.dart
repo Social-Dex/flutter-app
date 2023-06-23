@@ -6,20 +6,21 @@ part of 'models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
+UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       name: json['name'] as String? ?? '',
-      birthDay: json['birthDay'] as String? ?? '1970-01-01',
+      birthday: json['birthday'] as String? ?? '1970-01-01',
       isInRelationship: json['isInRelationship'] as bool? ?? false,
       occupation: json['occupation'] as String? ?? '',
       gender: json['gender'] as String? ?? '',
-      description: json['description'] as String? ?? '',
+      bio: json['bio'] as String? ?? '',
     );
 
-Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
+Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
+    <String, dynamic>{
       'name': instance.name,
-      'birthDay': instance.birthDay,
+      'birthday': instance.birthday,
       'isInRelationship': instance.isInRelationship,
       'occupation': instance.occupation,
       'gender': instance.gender,
-      'description': instance.description,
+      'bio': instance.bio,
     };

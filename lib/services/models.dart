@@ -2,25 +2,25 @@ import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
 @JsonSerializable()
-class UserData {
+class UserProfile {
   String name;
-  String birthDay;
+  String birthday;
   bool isInRelationship;
   String occupation;
   String gender;
-  String description;
+  String bio;
 
-  UserData({
+  UserProfile({
     this.name = '',
-    this.birthDay = '1970-01-01',
+    this.birthday = '1970-01-01',
     this.isInRelationship = false,
     this.occupation = '',
     this.gender = '',
-    this.description = '',
+    this.bio = '',
   });
 
-  factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
-  Map<String, dynamic> toJson() => _$UserDataToJson(this);
+  factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
+  Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 }
 
 class SimpleDate {
@@ -55,5 +55,21 @@ class SimpleDate {
   @override
   String toString() {
     return '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+  }
+
+  static int getSanitizedDateInput(int length, String? value) {
+    if (value == null || value.isEmpty) {
+      return 1;
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+      return 1;
+    }
+
+    if (value.toString().length > length) {
+      return int.parse(value.substring(0, length));
+    }
+
+    return int.parse(value);
   }
 }

@@ -14,6 +14,9 @@
     "logInInstead": "Stattdessen anmelden",
     "btnBack": "< Zurück",
     "btnNext": "Weiter >",
+    "year": "Jahr",
+    "month": "Monat",
+    "day": "Tag",
     "accept": "Zustimmen",
     "codexRespect": "Respektiere alle in der Community",
     "codexPrivacy": "Sei dir bewusst, dass alles was du teilst, von anderen gesehen wird",
@@ -31,6 +34,7 @@
     "exceptionUserNotFound": "Benutzer konnte nicht gefunden werden",
     "exceptionWrongPassword": "Passwort ist nicht korrekt",
     "unexpectedErrorOccured": "Ein unerwarteter Fehler ist aufgetreten",
+    "somethingWentWrong": "Etwas ist schief gelaufen",
     "profile": "Profil",
     "map": "Karte"
 }

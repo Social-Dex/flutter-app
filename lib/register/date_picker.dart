@@ -3,12 +3,12 @@ import 'package:app/services/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class BDayPicker extends StatefulWidget {
+class DatePicker extends StatefulWidget {
   final TextEditingController cYear;
   final TextEditingController cMonth;
   final TextEditingController cDay;
 
-  const BDayPicker({
+  const DatePicker({
     super.key,
     required this.cYear,
     required this.cMonth,
@@ -53,10 +53,11 @@ class BDayPicker extends StatefulWidget {
   }
 
   @override
-  State<BDayPicker> createState() => _BDayPickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _BDayPickerState extends State<BDayPicker> {
+class _DatePickerState extends State<DatePicker> {
+  final FocusNode fnYear = FocusNode();
   final FocusNode fnMonth = FocusNode();
   final FocusNode fnDay = FocusNode();
 
@@ -67,16 +68,24 @@ class _BDayPickerState extends State<BDayPicker> {
         Row(
           children: [
             NumberField(
-                hintText: 'YYYY', controller: widget.cYear, nextField: fnMonth),
+                hintText: 'YYYY',
+                labelText: AppLocalizations.of(context)!.year,
+                controller: widget.cYear,
+                focusNode: fnYear,
+                nextField: fnMonth),
             const Separator(),
             NumberField(
                 hintText: 'MM',
+                labelText: AppLocalizations.of(context)!.month,
                 controller: widget.cMonth,
                 focusNode: fnMonth,
                 nextField: fnDay),
             const Separator(),
             NumberField(
-                hintText: 'DD', controller: widget.cDay, focusNode: fnDay),
+                hintText: 'DD',
+                labelText: AppLocalizations.of(context)!.day,
+                controller: widget.cDay,
+                focusNode: fnDay),
           ],
         ),
         Row(
@@ -97,14 +106,16 @@ class _BDayPickerState extends State<BDayPicker> {
 class NumberField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final FocusNode? focusNode;
+  final String labelText;
+  final FocusNode focusNode;
   final FocusNode? nextField;
 
   const NumberField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.focusNode,
+    required this.labelText,
+    required this.focusNode,
     this.nextField,
   });
 
@@ -130,6 +141,7 @@ class _NumberFieldState extends State<NumberField> {
           }
         },
         decoration: InputDecoration(
+          labelText: widget.focusNode.hasFocus ? widget.labelText : null,
           hintText: widget.hintText,
           counter: Container(),
           alignLabelWithHint: true,
@@ -181,17 +193,17 @@ class _ErrorTextState extends State<ErrorText> {
     widget.cYear.addListener(() {
       String value = widget.cYear.text;
       date.year = _getSanitizedInput(4, value);
-      _setErrorText(BDayPicker.getValidationError(context, date));
+      _setErrorText(DatePicker.getValidationError(context, date));
     });
     widget.cMonth.addListener(() {
       String value = widget.cMonth.text;
       date.month = _getSanitizedInput(2, value);
-      _setErrorText(BDayPicker.getValidationError(context, date));
+      _setErrorText(DatePicker.getValidationError(context, date));
     });
     widget.cDay.addListener(() {
       String value = widget.cDay.text;
       date.day = _getSanitizedInput(2, value);
-      _setErrorText(BDayPicker.getValidationError(context, date));
+      _setErrorText(DatePicker.getValidationError(context, date));
     });
   }
 

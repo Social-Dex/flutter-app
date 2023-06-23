@@ -93,14 +93,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(AppLocalizations.of(context)!.logIn),
                 onPressed: () async {
                   if (!areValidCredentials) return;
-                  
+
                   context.loaderOverlay.show();
 
                   try {
-                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
                       email: email.toLowerCase(),
                       password: password,
-                    );
+                    )
+                        .then((value) {
+                      Navigator.pop(context);
+                      context.loaderOverlay.hide();
+                    });
                   } on FirebaseAuthException catch (e) {
                     setState(() {
                       switch (e.code) {
@@ -133,11 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     context.loaderOverlay.hide();
                     return;
                   }
-
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
-                  // ignore: use_build_context_synchronously
-                  context.loaderOverlay.hide();
                 },
               ),
             ],
