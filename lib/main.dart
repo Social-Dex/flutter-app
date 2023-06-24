@@ -24,7 +24,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyAkFJ63iaBffZ4qjdbzZ8riwoUOwVxMxPw",
+      appId: "1:237907804029:web:5d26287fc66ffe2e4cd614",
+      messagingSenderId: "237907804029",
+      projectId: "social-dex-6c9e8",
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {

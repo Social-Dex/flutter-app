@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -45,12 +48,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAkFJ63iaBffZ4qjdbzZ8riwoUOwVxMxPw',
-    appId: '1:237907804029:web:a1a52b089fe6a1bd4cd614',
+    appId: '1:237907804029:web:5d26287fc66ffe2e4cd614',
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     authDomain: 'social-dex-6c9e8.firebaseapp.com',
     storageBucket: 'social-dex-6c9e8.appspot.com',
-    measurementId: 'G-J2XML3MYHR',
+    measurementId: 'G-ZT40EWWHJR',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -67,17 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '237907804029',
     projectId: 'social-dex-6c9e8',
     storageBucket: 'social-dex-6c9e8.appspot.com',
+    androidClientId: '237907804029-n56fcdq1l8rcerk77fama0q72pkq1hnv.apps.googleusercontent.com',
     iosClientId: '237907804029-75iejbla0lkobncucepgine2ahglabp3.apps.googleusercontent.com',
     iosBundleId: 'com.social-dex.app',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBLaKO_eUaTfCWbLKXCmbfJP5Zof1nE6wo',
-    appId: '1:237907804029:ios:332c5da567bbab104cd614',
-    messagingSenderId: '237907804029',
-    projectId: 'social-dex-6c9e8',
-    storageBucket: 'social-dex-6c9e8.appspot.com',
-    iosClientId: '237907804029-qe5jl61bjiaeh5pk692qa5qbgnuac837.apps.googleusercontent.com',
-    iosBundleId: 'com.social-dex.app.RunnerTests',
   );
 }
