@@ -36,5 +36,8 @@
     "unexpectedErrorOccured": "Ein unerwarteter Fehler ist aufgetreten",
     "somethingWentWrong": "Etwas ist schief gelaufen",
     "profile": "Profil",
-    "map": "Karte"
+    "map": "Karte",
+    "locationServicesDisabled": "Standortdienste sind deaktiviert. Bitte aktivieren.",
+    "locationPermissionsDenied": "Standortdienste wurden abgelehnt",
+    "locationPermissionsPermDenied": "Standortdienste wurden dauerhaft abgelehnt, Zugriff kann nicht mehr erbeten werden."
 }

@@ -150,5 +150,17 @@
     "map": "Map",
     "@map": {
         "descripiton": "map to view other users"
+    },
+    "locationServicesDisabled": "Location services are disabled. Please enable the services.",
+    "@locationServicesDisabled": {
+        "description": "Message when location is not enabled"
+    },
+    "locationPermissionsDenied": "Location permissions are denied",
+    "@locationPermissionsDenied": {
+        "description": "Message when location permissions have been denied"
+    },
+    "locationPermissionsPermDenied": "Location permissions are permanently denied, we cannot request permissions.",
+    "@locationPermissionsPermDenied": {
+        "description": "Message when location permissions have been permanently denied by the user"
     }
 }
