@@ -132,7 +132,7 @@ class _NumberFieldState extends State<NumberField> {
         focusNode: widget.focusNode,
         maxLines: 1,
         maxLength: widget.hintText.length,
-        keyboardType: TextInputType.datetime,
+        keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         onChanged: (value) {
           if (widget.nextField != null &&

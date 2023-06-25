@@ -23,6 +23,10 @@
     "@tooShort": {
         "descripiton": "Input is too short"
     },
+    "forgotPassword": "Forgot password?",
+    "@forgotPassword": {
+        "descripiton": "When the user wants to reset their password"
+    },
     "invalid": "Invalid",
     "@invalid": {
         "descripiton": "Invalid input"
@@ -74,6 +78,26 @@
     "accept": "Accept",
     "@accept": {
         "descripiton": "Button to accept"
+    },
+    "howDoYouIdentify": "How do you identify?",
+    "@howDoYouIdentify": {
+        "descripiton": "Gender selection help text"
+    },
+    "male": "Male",
+    "@male": {
+        "descripiton": "Gender male"
+    },
+    "female": "Female",
+    "@female": {
+        "descripiton": "Gender female"
+    },
+    "other": "Other",
+    "@other": {
+        "descripiton": "Gender other"
+    },
+    "yourGender": "Your gender",
+    "@yourGender": {
+        "descripiton": "Describing your own gender"
     },
     "codexRespect": "Respect everyone in the community",
     "@codexRespect": {

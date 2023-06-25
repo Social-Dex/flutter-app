@@ -13,9 +13,19 @@ class FirestoreService {
 
     var data = {
       'name': userProfile.name,
-      'birthdate': userProfile.birthday.toString(),
+      'birthday': userProfile.birthday.toString(),
+      'gender': userProfile.gender,
+      'occupation': userProfile.occupation,
     };
 
     return ref.set(data, SetOptions(merge: true));
+  }
+
+  Future<UserProfile> getUserProfile() async {
+    var user = AuthService().user!;
+    var ref = _db.collection('users').doc(user.uid);
+    var snapshot = await ref.get();
+    
+    return UserProfile.fromJson(snapshot.data() ?? {});
   }
 }

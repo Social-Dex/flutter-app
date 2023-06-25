@@ -1,4 +1,6 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app/services/models.dart';
+import 'package:app/services/firestore.dart';
 import 'package:app/services/location.dart';
 import 'package:app/connections/connections.dart';
 import 'package:app/map/map.dart';
@@ -17,20 +19,34 @@ class OverviewScreen extends StatefulWidget {
 class _OverviewScreenState extends State<OverviewScreen> {
   int _selectedIndex = 2;
 
+  UserProfile _profile = UserProfile();
   LatLng _initLocation = const LatLng(0.0, 0.0);
 
   void _onItemTapped(int index) async {
     context.loaderOverlay.show();
 
+    UserProfile profile = UserProfile();
     LatLng curLocation = const LatLng(0.0, 0.0);
-    if (index == 1) {
-      curLocation = await Location().getCurrentPosition(context);
+
+    switch (index) {
+      case 0:
+        profile = await FirestoreService().getUserProfile();
+        break;
+      case 1:
+        curLocation = await Location().getCurrentPosition(context);
+        break;
     }
 
     setState(() {
       _selectedIndex = index;
-      if (index == 1) {
-        _initLocation = curLocation;
+
+      switch (index) {
+        case 0:
+          _profile = profile;
+          break;
+        case 1:
+          _initLocation = curLocation;
+          break;
       }
     });
 
@@ -40,7 +56,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
-      const ProfileScreen(),
+      ProfileScreen(profile: _profile),
       MapScreen(initLocation: _initLocation),
       const ConnectionsScreen(),
     ];

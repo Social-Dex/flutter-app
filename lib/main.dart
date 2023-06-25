@@ -1,7 +1,9 @@
+import 'package:app/shared/loading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app/firebase_options.dart';
 import 'package:app/routes.dart';
 import 'package:app/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
@@ -25,12 +27,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyAkFJ63iaBffZ4qjdbzZ8riwoUOwVxMxPw",
-      appId: "1:237907804029:web:5d26287fc66ffe2e4cd614",
-      messagingSenderId: "237907804029",
-      projectId: "social-dex-6c9e8",
-    ),
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   @override
@@ -52,7 +49,7 @@ class _AppState extends State<App> {
           );
         }
 
-        return const Text('loading');
+        return const LoadingScreen();
       },
     );
   }

@@ -5,6 +5,7 @@ import 'package:app/register/screens.dart';
 import 'package:app/register/name.dart';
 import 'package:app/register/bday.dart';
 import 'package:app/register/date_picker.dart';
+import 'package:app/register/gender.dart';
 import 'package:app/register/codex.dart';
 import 'package:app/login/credentials.dart';
 import 'package:app/services/firestore.dart';
@@ -63,14 +64,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isScreenComplete(int screen) {
     switch (screen) {
       case Screens.name:
-        return isValidName && acceptedTAC;
+        return isValidName;
       case Screens.birthdate:
         return isValidDate &&
-            cYear.text.isNotEmpty &&
-            cMonth.text.isNotEmpty &&
-            cDay.text.isNotEmpty;
-      case Screens.codex:
+      cYear.text.isNotEmpty &&
+      cMonth.text.isNotEmpty &&
+      cDay.text.isNotEmpty;
+      case Screens.gender:
+        if (gender.toLowerCase() == 'other' && userProfile.gender.isEmpty) {
+          return false;
+        }
         return true;
+      case Screens.codex:
+        return acceptedTAC;
       case Screens.credentials:
         return areValidCredentials;
     }
@@ -80,18 +86,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final cName = TextEditingController();
   bool isValidName = false;
-  bool acceptedTAC = false;
-  void _onTACChanged(bool value) {
-    setState(() {
-      acceptedTAC = value;
-    });
-  }
 
   final TextEditingController cYear = TextEditingController();
   final TextEditingController cMonth = TextEditingController();
   final TextEditingController cDay = TextEditingController();
   final SimpleDate birthDate = SimpleDate();
   bool isValidDate = false;
+
+  String gender = 'male';
+  final TextEditingController cManualGender = TextEditingController();
+  void _onGenderChanged(String gender) {
+    setState(() {
+      this.gender = gender;
+    });
+  }
+
+  bool acceptedTAC = false;
+  void _onTACChanged(bool value) {
+    setState(() {
+      acceptedTAC = value;
+    });
+  }
 
   final cEmail = TextEditingController();
   final cPassword = TextEditingController();
@@ -129,6 +144,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       birthDate.day = SimpleDate.getSanitizedDateInput(2, cDay.text);
       setState(() {
         isValidDate = DatePicker.getValidationError(context, birthDate) == '';
+      });
+    });
+    cManualGender.addListener(() {
+      setState(() {
+        userProfile.gender = cManualGender.text;
       });
     });
     cEmail.addListener(() {
@@ -171,10 +191,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> inputSreens = <Widget>[
-      NameScreen(
-          cName: cName, initAccept: acceptedTAC, onTACChanged: _onTACChanged),
+      NameScreen(cName: cName),
       BirthDateScreen(cYear: cYear, cMonth: cMonth, cDay: cDay),
-      const CodexScreen(),
+      GenderScreen(
+        onGenderChanged: _onGenderChanged,
+        cManualGender: cManualGender,
+        initGender: gender,
+      ),
+      CodexScreen(onTACChanged: _onTACChanged, initAccept: acceptedTAC),
       Column(children: [
         Expanded(
           child: CredentialsScreen(
@@ -234,14 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Visibility(
                 visible: _curScreen != inputSreens.length,
                 child: ElevatedButton(
-                  style: (_curScreen == Screens.name &&
-                              _isScreenComplete(Screens.name) ||
-                          _curScreen == Screens.birthdate &&
-                              _isScreenComplete(Screens.birthdate) ||
-                          _curScreen == Screens.codex &&
-                              _isScreenComplete(Screens.codex) ||
-                          _curScreen == Screens.credentials &&
-                              _isScreenComplete(Screens.credentials))
+                  style: _isScreenComplete(_curScreen)
                       ? null
                       : const ButtonStyle(
                           backgroundColor:
@@ -256,15 +273,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   onPressed: () {
                     if (_curScreen == inputSreens.length) return;
+                    if (!_isScreenComplete(_curScreen)) return;
 
-                    switch (_curScreen) {
-                      case Screens.name:
-                        if (!isValidName || !acceptedTAC) return;
-                        break;
-                      case Screens.birthdate:
-                        if (!isValidDate) return;
-                        break;
-                    }
                     setState(() {
                       _curScreen++;
                     });
@@ -292,12 +302,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         !areValidCredentials) return;
 
                     context.loaderOverlay.show();
+                    
                     try {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: email.toLowerCase(), password: password)
                           .then((value) async {
                         userProfile.birthday = birthDate.toString();
+                        if (gender != 'other') {
+                          userProfile.gender = gender.toLowerCase();
+                        }
 
                         await FirestoreService()
                             .updateUserProfile(userProfile)

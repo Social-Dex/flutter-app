@@ -11,7 +11,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       birthday: json['birthday'] as String? ?? '1970-01-01',
       isInRelationship: json['isInRelationship'] as bool? ?? false,
       occupation: json['occupation'] as String? ?? '',
-      gender: json['gender'] as String? ?? '',
+      gender: json['gender'] as String? ?? 'male',
       bio: json['bio'] as String? ?? '',
     );
 

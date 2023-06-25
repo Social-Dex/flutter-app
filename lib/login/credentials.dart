@@ -1,3 +1,4 @@
+import 'package:app/register/help_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -45,14 +46,7 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
       child: Column(
         children: [
           widget.helpText != null && widget.helpText!.isNotEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
-                    child: Text(
-                      widget.helpText ?? '',
-                    ),
-                  ),
-                )
+              ? HelpText(widget.helpText ?? '')
               : Container(),
           const Spacer(),
           Padding(

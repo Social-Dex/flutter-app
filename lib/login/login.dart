@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return LoaderOverlay(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.logIn),
         ),
@@ -64,6 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               child: CredentialsScreen(cEmail: cEmail, cPassword: cPassword),
             ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.forgotPassword),
+              onPressed: () {
+                print('TODO');
+              },
+            ),
+            const Spacer(),
             loginError != ''
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),

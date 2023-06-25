@@ -25,7 +25,7 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
 
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
+    timer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
       var curPos = await Location().getCurrentPosition(context);
       setState(() {
         _currentPosition = curPos;
