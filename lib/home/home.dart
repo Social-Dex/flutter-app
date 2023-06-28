@@ -3,6 +3,7 @@ import 'package:app/register/register.dart';
 import 'package:app/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:app/services/auth.dart';
+import 'package:app/services/location.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,7 @@ class HomeScreen extends StatelessWidget {
               child: Text('Error'),
             );
           } else if (snapshot.hasData) {
+            Location().handleLocationPermission(context);
             return const OverviewScreen();
           } else {
             return const RegisterScreen();

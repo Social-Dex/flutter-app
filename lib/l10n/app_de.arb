@@ -45,5 +45,6 @@
     "map": "Karte",
     "locationServicesDisabled": "Standortdienste sind deaktiviert. Bitte aktivieren.",
     "locationPermissionsDenied": "Standortdienste wurden abgelehnt",
-    "locationPermissionsPermDenied": "Standortdienste wurden dauerhaft abgelehnt, Zugriff kann nicht mehr erbeten werden."
+    "locationPermissionsPermDenied": "Standortdienste wurden dauerhaft abgelehnt, Zugriff kann nicht mehr erbeten werden.",
+    "pleaseEnableLocationPermissions": "Bitte gib die Ortungsdienste frei und starte die App erneut."
 }

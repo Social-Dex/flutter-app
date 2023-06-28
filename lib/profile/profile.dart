@@ -1,14 +1,14 @@
+import 'package:app/services/user_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:app/services/models.dart';
 import 'package:app/services/auth.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final UserProfile profile;
+  final UserData userData;
 
   const ProfileScreen({
     super.key,
-    required this.profile,
+    required this.userData,
   });
 
   @override
@@ -27,22 +27,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(children: [
               const Text('Name:'),
               const Spacer(),
-              Text(widget.profile.name),
+              Text(widget.userData.name),
             ]),
             Row(children: [
               const Text('Birthday:'),
               const Spacer(),
-              Text(widget.profile.birthday),
+              Text(widget.userData.birthday),
             ]),
             Row(children: [
               const Text('Gender:'),
               const Spacer(),
-              Text(widget.profile.gender),
+              Text(widget.userData.gender),
             ]),
             Row(children: [
               const Text('Email:'),
               const Spacer(),
-              Text(AuthService().user!.email!),
+              Text(widget.userData.email),
             ]),
             const Spacer(),
             ElevatedButton(
