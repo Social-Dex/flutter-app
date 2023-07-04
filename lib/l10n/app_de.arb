@@ -39,7 +39,7 @@
     "exceptionUserDisabled": "Benutzerkonto ist gesperrt",
     "exceptionUserNotFound": "Benutzer konnte nicht gefunden werden",
     "exceptionWrongPassword": "Passwort ist nicht korrekt",
-    "unexpectedErrorOccured": "Ein unerwarteter Fehler ist aufgetreten",
+    "unexpectedErrorOccured": "Ein unerwarteter Fehler ist aufgetreten. Bitte überprüfe deine Internetverbindung",
     "somethingWentWrong": "Etwas ist schief gelaufen",
     "profile": "Profil",
     "map": "Karte",

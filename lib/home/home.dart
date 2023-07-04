@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:app/shared/shared.dart';
+import 'package:app/services/auth.dart';
 import 'package:app/overview/overview.dart';
 import 'package:app/register/register.dart';
-import 'package:app/shared/shared.dart';
-import 'package:flutter/material.dart';
-import 'package:app/services/auth.dart';
-import 'package:app/services/location.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,11 +12,14 @@ class HomeScreen extends StatelessWidget {
     return StreamBuilder(
         stream: AuthService().userStream,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.hasError) {
-            return const LoadingScreen();
+          if (snapshot.hasError) {
+            return const Scaffold(
+              body: Padding(
+                padding: EdgeInsets.all(10),
+                child: ErrorScreen(),
+              ),
+            );
           } else if (snapshot.hasData) {
-            Location().handleLocationPermission(context);
             return const OverviewScreen();
           } else {
             return const RegisterScreen();

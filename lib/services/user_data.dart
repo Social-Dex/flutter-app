@@ -8,7 +8,7 @@ import 'package:latlong2/latlong.dart';
 class UserData {
   late UserProfile _profile;
   late User _authData;
-  LatLng _position = const LatLng(0,0);
+  LatLng _lastPostion = const LatLng(0,0);
 
   UserData() {
     update();
@@ -19,7 +19,7 @@ class UserData {
     _authData = AuthService().user!;
 
     Location().getCurrentPosition().listen((position) {
-      _position = position;
+      _lastPostion = position;
     });
   }
 
@@ -51,11 +51,11 @@ class UserData {
     return _profile.bio;
   }
 
-  LatLng get position {
-    if (_position == const LatLng(0,0)) {
-      update();
-    }
+  Stream<LatLng> get position {
+    return Location().getCurrentPosition();
+  }
 
-    return _position;
+  LatLng get lastPosition {
+    return _lastPostion;
   }
 }

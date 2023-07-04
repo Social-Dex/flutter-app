@@ -1,19 +1,33 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class ErrorMessage extends StatelessWidget {
-  final String message;
+class ErrorScreen extends StatelessWidget {
+  final String errorMessage;
 
-  const ErrorMessage({super.key, required this.message});
+  const ErrorScreen({
+    super.key,
+    this.errorMessage = '',
+  });
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        message,
-        style: const TextStyle(
-          color: Colors.red,
-          fontSize: 22,
-        ),
+      child: Column(
+        children: [
+          const Spacer(),
+          Icon(
+            Icons.warning_rounded,
+            size: 200,
+            color: Colors.red[300],
+          ),
+          Text(
+            errorMessage == ''
+                ? AppLocalizations.of(context)!.unexpectedErrorOccured
+                : errorMessage,
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(),
+        ],
       ),
     );
   }

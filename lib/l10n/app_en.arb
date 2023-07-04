@@ -159,7 +159,7 @@
     "@exceptionWrongPassword": {
         "description": "Exception thrown when trying to log in with wrong password"
     },
-    "unexpectedErrorOccured": "An unexpected error occurred",
+    "unexpectedErrorOccured": "An unexpected error occurred. Please check your internet connection.",
     "@unexpectedErrorOccured": {
         "description": "Default error message"
     },

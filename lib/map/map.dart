@@ -1,6 +1,8 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:app/services/user_data.dart';
 import 'package:flutter/material.dart';
+import 'package:app/shared/shared.dart';
+import 'package:app/services/location.dart';
+import 'package:app/services/user_data.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -21,8 +23,48 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
-      child: widget.userData.position == const LatLng(0, 0)
-          ? Center(
+      child: FutureBuilder<Object>(
+        future: Location().handleLocationPermission(context),
+        builder: (context, snapshot) {
+          if (snapshot.data == true) {
+            return StreamBuilder<Object>(
+                stream: widget.userData.position,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      widget.userData.lastPosition != const LatLng(0, 0)) {
+                    return FlutterMap(
+                      options: MapOptions(
+                        center: widget.userData.lastPosition,
+                        zoom: 18,
+                        maxZoom: 18,
+                        minZoom: 15,
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          userAgentPackageName: 'com.social-dex.app',
+                        ),
+                        MarkerLayer(
+                          rotate: true,
+                          markers: [
+                            Marker(
+                              point: widget.userData.lastPosition,
+                              width: 70,
+                              height: 70,
+                              builder: (context) => const Icon(
+                                  Icons.circle_sharp,
+                                  color: Colors.teal),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return const Loader();
+                });
+          } else if (snapshot.data == false) {
+            return Center(
               child: Column(
                 children: [
                   const Spacer(),
@@ -32,37 +74,19 @@ class _MapScreenState extends State<MapScreen> {
                     color: Colors.red[300],
                   ),
                   Text(
-                      AppLocalizations.of(context)!.pleaseEnableLocationPermissions),
+                    AppLocalizations.of(context)!
+                        .pleaseEnableLocationPermissions,
+                    textAlign: TextAlign.center,
+                  ),
                   const Spacer(),
                 ],
               ),
-            )
-          : FlutterMap(
-              options: MapOptions(
-                center: widget.userData.position,
-                zoom: 18,
-                maxZoom: 18,
-                minZoom: 15,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.social-dex.app',
-                ),
-                MarkerLayer(
-                  rotate: true,
-                  markers: [
-                    Marker(
-                      point: widget.userData.position,
-                      width: 70,
-                      height: 70,
-                      builder: (context) =>
-                          const Icon(Icons.circle_sharp, color: Colors.teal),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            );
+          }
+
+          return const Loader();
+        },
+      ),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:app/shared/shared.dart';
 import 'package:app/services/user_data.dart';
 import 'package:app/connections/connections.dart';
 import 'package:app/map/map.dart';
 import 'package:app/profile/profile.dart';
-import 'package:flutter/material.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({super.key});
@@ -14,8 +14,15 @@ class OverviewScreen extends StatefulWidget {
 }
 
 class _OverviewScreenState extends State<OverviewScreen> {
-  final UserData _userData = UserData();
-  int _selectedIndex = 2;
+  late final UserData _userData;
+  int _selectedIndex = 0;
+
+  Future<UserData> _gatherUserData() async {
+    _userData = UserData();
+    await _userData.update();
+
+    return _userData;
+  }
 
   void _onItemTapped(int index) async {
     setState(() {
@@ -25,19 +32,22 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgetOptions = <Widget>[
-      ProfileScreen(userData: _userData),
-      MapScreen(userData: _userData),
-      const ConnectionsScreen(),
-    ];
-
     return Scaffold(
-      body: LoaderOverlay(
-        useDefaultLoading: false,
-        overlayWidget:
-            Center(child: Image.asset('assets/loading_animation.gif', width: (MediaQuery.of(context).size.width) * 0.6)),
-        child: widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: FutureBuilder<Object>(
+          future: _gatherUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Loader();
+            }
+
+            List<Widget> widgetOptions = <Widget>[
+              ProfileScreen(userData: _userData),
+              MapScreen(userData: _userData),
+              const ConnectionsScreen(),
+            ];
+
+            return widgetOptions.elementAt(_selectedIndex);
+          }),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

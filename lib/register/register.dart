@@ -1,5 +1,6 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:app/shared/shared.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:app/register/screens.dart';
 import 'package:app/register/name.dart';
@@ -222,9 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return LoaderOverlay(
       useDefaultLoading: false,
-      overlayWidget: Center(
-          child: Image.asset('assets/loading_animation.gif',
-              width: (MediaQuery.of(context).size.width) * 0.6)),
+      overlayWidget: const Loader(),
       child: Scaffold(
         body: Column(
           children: [
