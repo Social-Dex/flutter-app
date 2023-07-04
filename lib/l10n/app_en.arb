@@ -11,6 +11,10 @@
     "@termsAndConditions": {
         "description": "Link to the terms and conditions of the app"
     },
+    "dataProtectionAgreement": "Data Protection Agreement",
+    "@dataProtectionAgreement": {
+        "descripiton": "Link to the data protection agreement of the app"
+    },
     "email": "Email",
     "@email": {
         "descripiton": "email address"

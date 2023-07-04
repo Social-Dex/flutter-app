@@ -19,11 +19,9 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(7, 34, 79, 1),
-      body: Center(
-        child: Image.asset('assets/logo_with_text.png'),
-      ),
+    return const Scaffold(
+      backgroundColor: Color.fromRGBO(7, 34, 79, 1),
+      body: Loader(),
     );
   }
 }

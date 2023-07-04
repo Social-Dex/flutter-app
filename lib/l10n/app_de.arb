@@ -2,6 +2,7 @@
     "name": "Name",
     "iAcceptThe": "Ich akzeptiere die",
     "termsAndConditions": "AGBs",
+    "dataProtectionAgreement": "Datenschutzvereinbarung",
     "email": "E-Mail",
     "password": "Passwort",
     "tooShort": "Zu kurz",

@@ -30,9 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Text(widget.userData.name),
             ]),
             Row(children: [
-              const Text('Birthday:'),
+              const Text('Age:'),
               const Spacer(),
-              Text(widget.userData.birthday),
+              Text(widget.userData.age.toString()),
             ]),
             Row(children: [
               const Text('Gender:'),

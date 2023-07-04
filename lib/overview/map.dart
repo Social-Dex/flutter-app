@@ -30,8 +30,7 @@ class _MapScreenState extends State<MapScreen> {
             return StreamBuilder<Object>(
                 stream: widget.userData.position,
                 builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      widget.userData.lastPosition != const LatLng(0, 0)) {
+                  if (widget.userData.lastPosition != const LatLng(0, 0)) {
                     return FlutterMap(
                       options: MapOptions(
                         center: widget.userData.lastPosition,

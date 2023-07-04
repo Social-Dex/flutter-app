@@ -77,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
         return true;
       case Screens.codex:
-        return acceptedTAC;
+        return acceptedTAC && acceptedDPA;
       case Screens.credentials:
         return areValidCredentials;
     }
@@ -103,9 +103,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   bool acceptedTAC = false;
+  bool acceptedDPA = false;
   void _onTACChanged(bool value) {
     setState(() {
       acceptedTAC = value;
+    });
+  }
+
+  void _onDPAChanged(bool value) {
+    setState(() {
+      acceptedDPA = value;
     });
   }
 
@@ -199,7 +206,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         cManualGender: cManualGender,
         initGender: gender,
       ),
-      CodexScreen(onTACChanged: _onTACChanged, initAccept: acceptedTAC),
+      CodexScreen(
+        onTACChanged: _onTACChanged,
+        onDPAChanged: _onDPAChanged,
+        initAcceptTAC: acceptedTAC,
+        initAcceptDPA: acceptedDPA,
+      ),
       Column(children: [
         Expanded(
           child: CredentialsScreen(

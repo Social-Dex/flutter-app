@@ -2,9 +2,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/shared/shared.dart';
 import 'package:app/services/user_data.dart';
-import 'package:app/connections/connections.dart';
-import 'package:app/map/map.dart';
-import 'package:app/profile/profile.dart';
+import 'package:app/overview/connections.dart';
+import 'package:app/overview/map.dart';
+import 'package:app/overview/profile.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({super.key});
@@ -18,7 +18,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   int _selectedIndex = 0;
 
   Future<UserData> _gatherUserData() async {
-    _userData = UserData();
+    _userData = UserData(context);
     await _userData.update();
 
     return _userData;
