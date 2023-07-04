@@ -67,9 +67,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return isValidName;
       case Screens.birthdate:
         return isValidDate &&
-      cYear.text.isNotEmpty &&
-      cMonth.text.isNotEmpty &&
-      cDay.text.isNotEmpty;
+            cYear.text.isNotEmpty &&
+            cMonth.text.isNotEmpty &&
+            cDay.text.isNotEmpty;
       case Screens.gender:
         if (gender.toLowerCase() == 'other' && userProfile.gender.isEmpty) {
           return false;
@@ -221,6 +221,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ];
 
     return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: Center(
+          child: Image.asset('assets/loading_animation.gif',
+              width: (MediaQuery.of(context).size.width) * 0.6)),
       child: Scaffold(
         body: Column(
           children: [
@@ -302,7 +306,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         !areValidCredentials) return;
 
                     context.loaderOverlay.show();
-                    
+
                     try {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(

@@ -55,6 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: Center(
+          child: Image.asset('assets/loading_animation.gif',
+              width: (MediaQuery.of(context).size.width) * 0.6)),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(

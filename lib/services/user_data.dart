@@ -52,6 +52,10 @@ class UserData {
   }
 
   LatLng get position {
+    if (_position == const LatLng(0,0)) {
+      update();
+    }
+
     return _position;
   }
 }

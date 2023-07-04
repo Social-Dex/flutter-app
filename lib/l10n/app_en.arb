@@ -187,7 +187,7 @@
     "@locationPermissionsPermDenied": {
         "description": "Message when location permissions have been permanently denied by the user"
     },
-    "pleaseEnableLocationPermissions": "Please enable location permissions and restart the app.",
+    "pleaseEnableLocationPermissions": "Please enable location permissions for this app.",
     "@pleaseEnableLocationPermissions": {
         "description": "Hint for user to turn on location settings for the app in order for the map functionality to work"
     }

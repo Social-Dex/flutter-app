@@ -31,27 +31,30 @@ class _OverviewScreenState extends State<OverviewScreen> {
       const ConnectionsScreen(),
     ];
 
-    return LoaderOverlay(
-      child: Scaffold(
-        body: widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.account_circle_outlined),
-              label: AppLocalizations.of(context)!.profile,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.map_outlined),
-              label: AppLocalizations.of(context)!.map,
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.list_alt_outlined),
-              label: 'Social-Dex',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+    return Scaffold(
+      body: LoaderOverlay(
+        useDefaultLoading: false,
+        overlayWidget:
+            Center(child: Image.asset('assets/loading_animation.gif', width: (MediaQuery.of(context).size.width) * 0.6)),
+        child: widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.account_circle_outlined),
+            label: AppLocalizations.of(context)!.profile,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.map_outlined),
+            label: AppLocalizations.of(context)!.map,
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt_outlined),
+            label: 'Social-Dex',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
