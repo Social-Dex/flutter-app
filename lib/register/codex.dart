@@ -64,7 +64,6 @@ class _CodexScreenState extends State<CodexScreen> {
               ),
             ),
           ),
-          const Spacer(),
           Row(
             children: [
               const Spacer(),

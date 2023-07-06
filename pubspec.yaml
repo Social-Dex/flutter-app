@@ -55,6 +55,8 @@ dependencies:
   rxdart: ^0.27.7
 
   age_calculator: ^1.0.0
+  fluttermoji: ^1.0.2
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:

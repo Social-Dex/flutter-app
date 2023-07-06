@@ -12,6 +12,9 @@ class HomeScreen extends StatelessWidget {
     return StreamBuilder(
         stream: AuthService().userStream,
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          }
           if (snapshot.hasError) {
             return const Scaffold(
               body: Padding(

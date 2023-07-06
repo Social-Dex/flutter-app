@@ -1,3 +1,4 @@
+import 'package:app/overview/user_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/shared/shared.dart';
@@ -8,10 +9,12 @@ import 'package:latlong2/latlong.dart';
 
 class MapScreen extends StatefulWidget {
   final UserData userData;
+  final Function onOwnMapAvatarPressed;
 
   const MapScreen({
     super.key,
     required this.userData,
+    required this.onOwnMapAvatarPressed,
   });
 
   @override
@@ -51,9 +54,9 @@ class _MapScreenState extends State<MapScreen> {
                               point: widget.userData.lastPosition,
                               width: 70,
                               height: 70,
-                              builder: (context) => const Icon(
-                                  Icons.circle_sharp,
-                                  color: Colors.teal),
+                              builder: (context) => UserAvatar(
+                                  statusColor: Colors.transparent,
+                                  onPress: widget.onOwnMapAvatarPressed),
                             ),
                           ],
                         ),

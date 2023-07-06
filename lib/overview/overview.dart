@@ -15,18 +15,24 @@ class OverviewScreen extends StatefulWidget {
 
 class _OverviewScreenState extends State<OverviewScreen> {
   late final UserData _userData;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   Future<UserData> _gatherUserData() async {
     _userData = UserData(context);
     await _userData.update();
-
+    
     return _userData;
   }
 
   void _onItemTapped(int index) async {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  void _onOwnMapAvatarPressed() {
+    setState(() {
+      _selectedIndex = 0;
     });
   }
 
@@ -42,7 +48,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
             List<Widget> widgetOptions = <Widget>[
               ProfileScreen(userData: _userData),
-              MapScreen(userData: _userData),
+              MapScreen(userData: _userData, onOwnMapAvatarPressed: _onOwnMapAvatarPressed),
               const ConnectionsScreen(),
             ];
 

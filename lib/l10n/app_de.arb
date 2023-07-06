@@ -25,6 +25,10 @@
     "female": "Weiblich",
     "other": "Anderes",
     "yourGender": "Dein Geschlecht",
+    "occupation": "Tätigkeit",
+    "sexuality": "Sexualität",
+    "relationshipStatus": "Beziehungsstatus",
+    "biography": "Bio",
     "codexRespect": "Respektiere alle in der Community",
     "codexPrivacy": "Sei dir bewusst, dass alles was du teilst, von anderen gesehen wird",
     "codexAuthenticity": "Sei authentisch und ehrlich",
@@ -47,5 +51,7 @@
     "locationServicesDisabled": "Standortdienste sind deaktiviert. Bitte aktivieren.",
     "locationPermissionsDenied": "Standortdienste wurden abgelehnt",
     "locationPermissionsPermDenied": "Standortdienste wurden dauerhaft abgelehnt, Zugriff kann nicht mehr erbeten werden.",
-    "pleaseEnableLocationPermissions": "Bitte gib die Ortungsdienste für diese App frei."
+    "pleaseEnableLocationPermissions": "Bitte gib die Ortungsdienste für diese App frei.",
+    "avatarCustomization": "Avatar Anpassung",
+    "settings": "Einstellungen"
 }
