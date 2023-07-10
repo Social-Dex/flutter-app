@@ -15,7 +15,7 @@ class OverviewScreen extends StatefulWidget {
 
 class _OverviewScreenState extends State<OverviewScreen> {
   late final UserData _userData;
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   Future<UserData> _gatherUserData() async {
     _userData = UserData(context);

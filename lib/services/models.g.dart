@@ -13,6 +13,9 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       occupation: json['occupation'] as String? ?? '',
       gender: json['gender'] as String? ?? 'male',
       bio: json['bio'] as String? ?? '',
+      avatarSVG: json['avatarSVG'] as String? ?? '',
+      status: json['status'] as String? ?? 'approachable',
+      statusText: json['statusText'] as String? ?? '',
     );
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
@@ -23,4 +26,7 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
       'occupation': instance.occupation,
       'gender': instance.gender,
       'bio': instance.bio,
+      'avatarSVG': instance.avatarSVG,
+      'status': instance.status,
+      'statusText': instance.statusText,
     };

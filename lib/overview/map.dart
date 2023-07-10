@@ -40,12 +40,16 @@ class _MapScreenState extends State<MapScreen> {
                         zoom: 18,
                         maxZoom: 18,
                         minZoom: 15,
+                        keepAlive: true,
                       ),
                       children: [
                         TileLayer(
                           urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // 'https://tiles-eu.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png',
                           userAgentPackageName: 'com.social-dex.app',
+                          maxZoom: 18,
+                          maxNativeZoom: 18,
+                          additionalOptions: const {'api_key': ''},
                         ),
                         MarkerLayer(
                           rotate: true,

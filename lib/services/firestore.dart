@@ -16,6 +16,11 @@ class FirestoreService {
       'birthday': userProfile.birthday.toString(),
       'gender': userProfile.gender,
       'occupation': userProfile.occupation,
+      'isInRelationship': userProfile.isInRelationship,
+      'bio': userProfile.bio,
+      'avatarSVG': userProfile.avatarSVG,
+      'status': userProfile.status,
+      'statusText': userProfile.statusText,
     };
 
     return ref.set(data, SetOptions(merge: true));

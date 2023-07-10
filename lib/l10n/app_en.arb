@@ -107,10 +107,6 @@
     "@occupation": {
         "descripiton": "Label for what a user's job discription or education is"
     },
-    "sexuality": "Sexuality",
-    "@sexuality": {
-        "descripiton": "User's sexual orientation'"
-    },
     "biography": "Bio",
     "@biography": {
         "descripiton": "Section, where user can say a bit about themselves"
@@ -118,6 +114,18 @@
     "relationshipStatus": "Relationship Status",
     "@relationshipStatus": {
         "descripiton": "User's current relationship status"
+    },
+    "relationshipStatusTaken": "Taken",
+    "@relationshipStatusTaken": {
+        "descripiton": "User is in a relationship"
+    },
+    "relationshipStatusSingle": "Single",
+    "@relationshipStatusSingle": {
+        "descripiton": "User is NOT in a relationship"
+    },
+    "preferNotToAnswer": "Prefer not to answer",
+    "@preferNotToAnswer": {
+        "descripiton": "User chooses not to anser"
     },
     "codexRespect": "Respect everyone in the community",
     "@codexRespect": {

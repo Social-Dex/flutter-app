@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
@@ -5,10 +6,13 @@ part 'models.g.dart';
 class UserProfile {
   String name;
   String birthday;
-  bool isInRelationship;
+  bool? isInRelationship;
   String occupation;
   String gender;
   String bio;
+  String avatarSVG;
+  String status;
+  String statusText;
 
   UserProfile({
     this.name = '',
@@ -17,10 +21,50 @@ class UserProfile {
     this.occupation = '',
     this.gender = 'male',
     this.bio = '',
+    this.avatarSVG = '',
+    this.status = 'approachable',
+    this.statusText = '',
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileFromJson(json);
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
+}
+
+class UserStatus {
+  static UserStatusScheme get approachable =>
+      UserStatusScheme(name: 'approachable', color: Colors.green[600]!);
+  static UserStatusScheme get reserved =>
+      UserStatusScheme(name: 'reserved', color: Colors.red[300]!);
+  static UserStatusScheme get inactive =>
+      UserStatusScheme(name: 'inactive', color: Colors.yellow[700]!);
+  static UserStatusScheme get hidden =>
+      const UserStatusScheme(name: 'hidden', color: Colors.transparent);
+  
+  static UserStatusScheme getProp(String property) {
+    switch(property) {
+      case 'approachable':
+        return approachable;
+      case 'reserved':
+        return reserved;
+      case 'inactive':
+        return inactive;
+      case 'hidden':
+        return hidden;
+    }
+
+    return hidden;
+  }
+}
+
+class UserStatusScheme {
+  final String name;
+  final Color color;
+
+  const UserStatusScheme({
+    required this.name,
+    required this.color,
+  });
 }
 
 class SimpleDate {

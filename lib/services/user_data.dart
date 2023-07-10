@@ -13,24 +13,27 @@ class UserData {
   final BuildContext context;
   late UserProfile _profile;
   late User _authData;
-  LatLng _lastPostion = const LatLng(0,0);
-  late String _avatarSvg;
+  LatLng _lastPostion = const LatLng(0, 0);
 
   UserData(this.context) {
     update();
 
-
+    Location().getCurrentPosition().listen((position) {
+      _lastPostion = position;
+    });
   }
 
   Future<void> update() async {
     _profile = await FirestoreService().getUserProfile();
     _authData = AuthService().user!;
 
-    Location().getCurrentPosition().listen((position) {
-      _lastPostion = position;
-    });
+    if (_profile.avatarSVG == '') {
+      _profile.avatarSVG = await FluttermojiFunctions().encodeMySVGtoString();
+    }
+  }
 
-    _avatarSvg = await FluttermojiFunctions().encodeMySVGtoString();
+  UserProfile get profile {
+    return _profile;
   }
 
   String get email {
@@ -66,7 +69,7 @@ class UserData {
       case 'male':
         return AppLocalizations.of(context)!.male;
       case 'female':
-        return AppLocalizations.of(context)!.female;  
+        return AppLocalizations.of(context)!.female;
     }
 
     return _profile.gender;
@@ -83,6 +86,16 @@ class UserData {
     }
   }
 
+  String get relationshipStatus {
+    if (_profile.isInRelationship == true) {
+      return AppLocalizations.of(context)!.relationshipStatusTaken;
+    } else if (_profile.isInRelationship == false) {
+      return AppLocalizations.of(context)!.relationshipStatusSingle;
+    }
+
+    return AppLocalizations.of(context)!.preferNotToAnswer;
+  }
+
   String get bio {
     return _profile.bio;
   }
@@ -95,11 +108,15 @@ class UserData {
     return _lastPostion;
   }
 
-  Color get statusColor {
-    return Colors.green;
+  String get avatarSvg {
+    return _profile.avatarSVG;
   }
 
-  String get avatarSvg {
-    return _avatarSvg;
+  Color get statusColor {
+    return UserStatus.getProp(_profile.status).color;
+  }
+
+  String get statusText {
+    return _profile.statusText;
   }
 }
