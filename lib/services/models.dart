@@ -17,7 +17,7 @@ class UserProfile {
   UserProfile({
     this.name = '',
     this.birthday = '1970-01-01',
-    this.isInRelationship = false,
+    this.isInRelationship,
     this.occupation = '',
     this.gender = 'male',
     this.bio = '',

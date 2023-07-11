@@ -9,7 +9,7 @@ part of 'models.dart';
 UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       name: json['name'] as String? ?? '',
       birthday: json['birthday'] as String? ?? '1970-01-01',
-      isInRelationship: json['isInRelationship'] as bool? ?? false,
+      isInRelationship: json['isInRelationship'] as bool?,
       occupation: json['occupation'] as String? ?? '',
       gender: json['gender'] as String? ?? 'male',
       bio: json['bio'] as String? ?? '',

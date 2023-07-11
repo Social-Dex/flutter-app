@@ -1,11 +1,13 @@
-import 'package:app/overview/user_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/shared/shared.dart';
 import 'package:app/services/location.dart';
 import 'package:app/services/user_data.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:app/overview/user_avatar.dart';
 
 class MapScreen extends StatefulWidget {
   final UserData userData;
@@ -22,6 +24,10 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  final String styleUrl =
+      'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+  final String apiKey = '6ee70282-81f7-499d-be1d-5b0e70fbbea1';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,22 +48,50 @@ class _MapScreenState extends State<MapScreen> {
                         minZoom: 15,
                         keepAlive: true,
                       ),
+                      nonRotatedChildren: [
+                        RichAttributionWidget(
+                          attributions: [
+                            TextSourceAttribution(
+                              'Stadia Maps © OpenMapTiles © OpenStreetMap contributors',
+                              onTap: () async {
+                                launchUrl(
+                                  Uri.parse(
+                                      'https://stadiamaps.com/attribution'),
+                                  mode: LaunchMode.inAppWebView,
+                                ).then((success) {
+                                  if (!success) {
+                                    Fluttertoast.showToast(
+                                        msg: AppLocalizations.of(context)!
+                                            .unexpectedErrorOccured,
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.SNACKBAR,
+                                        timeInSecForIosWeb: 3,
+                                        backgroundColor: Colors.red[300],
+                                        textColor:
+                                            Theme.of(context).canvasColor,
+                                        fontSize: 18);
+                                  }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                       children: [
                         TileLayer(
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // 'https://tiles-eu.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png',
+                          urlTemplate: '$styleUrl?api_key={api_key}',
                           userAgentPackageName: 'com.social-dex.app',
                           maxZoom: 18,
                           maxNativeZoom: 18,
-                          additionalOptions: const {'api_key': ''},
+                          additionalOptions: {'api_key': apiKey},
                         ),
                         MarkerLayer(
                           rotate: true,
                           markers: [
                             Marker(
                               point: widget.userData.lastPosition,
-                              width: 70,
-                              height: 70,
+                              width: 90,
+                              height: 90,
                               builder: (context) => UserAvatar(
                                   statusColor: Colors.transparent,
                                   onPress: widget.onOwnMapAvatarPressed),

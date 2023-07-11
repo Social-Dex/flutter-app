@@ -15,13 +15,19 @@ class SettingsScreen extends StatelessWidget {
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           children: [
-            ElevatedButton(
-              child: Text(AppLocalizations.of(context)!.logOut),
-              onPressed: () {
-                AuthService().signOut().then((value) {
-                  Navigator.of(context).pop();
-                });
-              },
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.2),
+              child: ElevatedButton(
+                child: Text(AppLocalizations.of(context)!.logOut),
+                onPressed: () {
+                  AuthService().signOut().then((value) {
+                    Navigator.of(context).pop();
+                  });
+                },
+              ),
             ),
           ],
         ),

@@ -55,5 +55,6 @@
     "locationPermissionsPermDenied": "Standortdienste wurden dauerhaft abgelehnt, Zugriff kann nicht mehr erbeten werden.",
     "pleaseEnableLocationPermissions": "Bitte gib die Ortungsdienste für diese App frei.",
     "avatarCustomization": "Avatar Anpassung",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "save": "Speichern"
 }

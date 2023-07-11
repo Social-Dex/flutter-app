@@ -1,5 +1,6 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:app/shared/shared.dart';
 import 'package:app/services/firestore.dart';
 import 'package:app/services/models.dart';
 import 'package:fluttermoji/fluttermoji.dart';
@@ -13,6 +14,8 @@ class AvatarCustomizerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: const Loader(),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(

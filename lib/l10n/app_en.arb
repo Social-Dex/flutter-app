@@ -226,5 +226,9 @@
     "settings": "Settings",
     "@settings": {
         "description": "Settings screen title"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Text for save button"
     }
 }

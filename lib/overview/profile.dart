@@ -1,10 +1,11 @@
-import 'package:app/services/firestore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/overview/user_avatar.dart';
+import 'package:app/services/firestore.dart';
 import 'package:app/services/user_data.dart';
 import 'package:app/overview/avatar_customizer.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:app/overview/edit_profile_value.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserData userData;
@@ -28,12 +29,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   bool showEditOccupation = false;
-  TextEditingController cOccupation = TextEditingController();
   FocusNode fOccupation = FocusNode();
+  TextEditingController cOccupation = TextEditingController();
+  String occupation = '';
 
   bool showEditRelationshipStatus = false;
+  FocusNode fRelationshipStatus = FocusNode();
+  bool? isInRelationship;
 
   bool showEditBio = false;
+  FocusNode fBio = FocusNode();
+  TextEditingController cBio = TextEditingController();
+  String bio = '';
+
+  @override
+  initState() {
+    super.initState();
+
+    cOccupation.addListener(() {
+      occupation = cOccupation.text;
+    });
+    cBio.addListener(() {
+      bio = cBio.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    cOccupation.dispose();
+    cBio.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +129,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ProfileDisplayValue(
                       label: AppLocalizations.of(context)!.relationshipStatus,
                       value: widget.userData.relationshipStatus,
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          showEditRelationshipStatus = true;
+                          fRelationshipStatus.requestFocus();
+                        });
+                      },
                     ),
                     ProfileDisplayValue(
                       label: AppLocalizations.of(context)!.biography,
                       value: widget.userData.bio,
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          showEditBio = true;
+                          cBio.text = widget.userData.bio;
+                          fBio.requestFocus();
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -116,18 +154,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         showEditOccupation
-            ? EditOccupation(
-                cOccupation: cOccupation,
-                fOccupation: fOccupation,
-                onTapOutside: () {
+            ? EditProfileValue(
+                onExit: () {
                   setState(() {
                     showEditOccupation = false;
                   });
                 },
-                onSubmit: (value) {
+                onSubmit: () {
                   context.loaderOverlay.show();
 
-                  widget.userData.profile.occupation = value;
+                  widget.userData.profile.occupation = occupation;
 
                   FirestoreService()
                       .updateUserProfile(widget.userData.profile)
@@ -138,6 +174,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     });
                   });
                 },
+                widget: EditOccupation(
+                  controller: cOccupation,
+                  focusNode: fOccupation,
+                ),
+              )
+            : Container(),
+        showEditRelationshipStatus
+            ? EditProfileValue(
+                onSubmit: () {
+                  if (isInRelationship == widget.userData.isInRelationship) {
+                    return;
+                  }
+
+                  context.loaderOverlay.show();
+
+                  widget.userData.profile.isInRelationship = isInRelationship;
+
+                  FirestoreService()
+                      .updateUserProfile(widget.userData.profile)
+                      .then((value) {
+                    setState(() {
+                      showEditRelationshipStatus = false;
+                      context.loaderOverlay.hide();
+                    });
+                  });
+                },
+                onExit: () {
+                  setState(() {
+                    showEditRelationshipStatus = false;
+                  });
+                },
+                widget: EditRelationshipStatus(
+                  initValue: widget.userData.profile.isInRelationship,
+                  focusNode: fRelationshipStatus,
+                  onChanged: (isIR) {
+                    isInRelationship = isIR;
+                  },
+                ),
+              )
+            : Container(),
+        showEditBio
+            ? EditProfileValue(
+                onExit: () {
+                  setState(() {
+                    showEditBio = false;
+                  });
+                },
+                onSubmit: () {
+                  context.loaderOverlay.show();
+
+                  widget.userData.profile.bio = bio;
+
+                  FirestoreService()
+                      .updateUserProfile(widget.userData.profile)
+                      .then((value) {
+                    setState(() {
+                      showEditBio = false;
+                      context.loaderOverlay.hide();
+                    });
+                  });
+                },
+                widget: EditBio(
+                  controller: cBio,
+                  focusNode: fBio,
+                ),
               )
             : Container(),
       ],
@@ -160,7 +261,7 @@ class ProfileDisplayValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -193,52 +294,98 @@ class ProfileDisplayValue extends StatelessWidget {
 }
 
 class EditOccupation extends StatelessWidget {
-  final TextEditingController cOccupation;
-  final FocusNode fOccupation;
-  final Function onTapOutside;
-  final Function onSubmit;
+  final TextEditingController controller;
+  final FocusNode focusNode;
 
   const EditOccupation({
     super.key,
-    required this.cOccupation,
-    required this.fOccupation,
-    required this.onTapOutside,
-    required this.onSubmit,
+    required this.controller,
+    required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 10,
-        right: 10,
-        top: 29,
-        bottom: MediaQuery.of(context).size.height * 0.25,
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: AppLocalizations.of(context)!.occupation,
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          boxShadow: const <BoxShadow>[BoxShadow(blurRadius: 2)],
+      textCapitalization: TextCapitalization.words,
+      maxLength: 25,
+      maxLines: 1,
+      controller: controller,
+      focusNode: focusNode,
+    );
+  }
+}
+
+class EditRelationshipStatus extends StatelessWidget {
+  final bool? initValue;
+  final FocusNode focusNode;
+  final Function(bool?) onChanged;
+
+  const EditRelationshipStatus({
+    super.key,
+    required this.initValue,
+    required this.focusNode,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: AppLocalizations.of(context)!.relationshipStatus,
+      ),
+      value: initValue,
+      focusNode: focusNode,
+      items: [
+        DropdownMenuItem(
+          value: true,
+          child: Text(AppLocalizations.of(context)!.relationshipStatusTaken),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.occupation,
-            ),
-            textCapitalization: TextCapitalization.words,
-            maxLength: 20,
-            maxLines: 1,
-            controller: cOccupation,
-            focusNode: fOccupation,
-            onTapOutside: (event) {
-              onTapOutside();
-            },
-            onFieldSubmitted: (value) {
-              onSubmit(value);
-            },
+        DropdownMenuItem(
+          value: false,
+          child: Text(AppLocalizations.of(context)!.relationshipStatusSingle),
+        ),
+        DropdownMenuItem(
+          value: null,
+          child: Text(AppLocalizations.of(context)!.preferNotToAnswer),
+        ),
+      ],
+      onChanged: (isInRelationship) {
+        onChanged(isInRelationship);
+      },
+    );
+  }
+}
+
+class EditBio extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+
+  const EditBio({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.1,
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        reverse: true,
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.biography,
           ),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          controller: controller,
+          focusNode: focusNode,
         ),
       ),
     );
