@@ -24,14 +24,9 @@ class EditProfileValue extends StatelessWidget {
         child: Container(
           color: Colors.black26.withOpacity(0.2),
           child: Padding(
-            padding: EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: MediaQuery.of(context).size.height * 0.1,
-              bottom: MediaQuery.of(context).size.height * 0.1,
-            ),
-            child:
-            Container(
+            padding:
+                const EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 20),
+            child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
                 borderRadius: const BorderRadius.all(Radius.circular(4)),

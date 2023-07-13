@@ -32,7 +32,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   void _onOwnMapAvatarPressed() {
     setState(() {
-      _selectedIndex = 0;
+      _selectedIndex = 1;
     });
   }
 

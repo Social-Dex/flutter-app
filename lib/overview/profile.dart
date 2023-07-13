@@ -110,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 6),
                 child: ListView(
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
@@ -161,6 +161,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 onSubmit: () {
+                  if (occupation == widget.userData.occupation) {
+                    setState(() {
+                      showEditOccupation = false;
+                    });
+                    return;
+                  }
+
                   context.loaderOverlay.show();
 
                   widget.userData.profile.occupation = occupation;
@@ -182,8 +189,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             : Container(),
         showEditRelationshipStatus
             ? EditProfileValue(
+                onExit: () {
+                  setState(() {
+                    showEditRelationshipStatus = false;
+                  });
+                },
                 onSubmit: () {
-                  if (isInRelationship == widget.userData.isInRelationship) {
+                  if (isInRelationship ==
+                      widget.userData.profile.isInRelationship) {
+                    setState(() {
+                      showEditRelationshipStatus = false;
+                    });
                     return;
                   }
 
@@ -198,11 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       showEditRelationshipStatus = false;
                       context.loaderOverlay.hide();
                     });
-                  });
-                },
-                onExit: () {
-                  setState(() {
-                    showEditRelationshipStatus = false;
                   });
                 },
                 widget: EditRelationshipStatus(
@@ -222,6 +233,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 onSubmit: () {
+                  if (bio == widget.userData.bio) {
+                    setState(() {
+                      showEditBio = false;
+                    });
+                    return;
+                  }
+
                   context.loaderOverlay.show();
 
                   widget.userData.profile.bio = bio;
