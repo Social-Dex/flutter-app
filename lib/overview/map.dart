@@ -33,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
       child: FutureBuilder<Object>(
-        future: Location().handleLocationPermission(context),
+        future: LocationHandler().handleLocationPermission(context),
         builder: (context, snapshot) {
           if (snapshot.data == true) {
             return StreamBuilder<Object>(

@@ -45,15 +45,14 @@ dependencies:
   loader_overlay: ^2.2.0
   fluttertoast: ^8.2.2
 
+  location: ^5.0.0
   flutter_map: ^5.0.0
   latlong2: ^0.9.0
-  geolocator: ^9.0.2
 
   firebase_core: ^2.13.1
   cloud_firestore: ^4.8.0
   firebase_auth: ^4.6.2
   provider: ^6.0.5
-  rxdart: ^0.27.7
 
   age_calculator: ^1.0.0
   fluttermoji: ^1.0.2
@@ -92,6 +91,7 @@ flutter:
     - assets/
     - assets/loading_animation.gif
     - assets/logo_with_text.png
+    - assets/logo_trns_bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

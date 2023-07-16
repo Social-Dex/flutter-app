@@ -15,7 +15,7 @@ class OverviewScreen extends StatefulWidget {
 
 class _OverviewScreenState extends State<OverviewScreen> {
   late final UserData _userData;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   Future<UserData> _gatherUserData() async {
     _userData = UserData(context);
@@ -32,7 +32,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   void _onOwnMapAvatarPressed() {
     setState(() {
-      _selectedIndex = 1;
+      _selectedIndex = 0;
     });
   }
 

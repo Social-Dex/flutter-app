@@ -56,5 +56,6 @@
     "pleaseEnableLocationPermissions": "Bitte gib die Ortungsdienste für diese App frei.",
     "avatarCustomization": "Avatar Anpassung",
     "settings": "Einstellungen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "pleaseVerifyYourEmailAddress": "Bitte verifiziere deine E-Mail Adresse"
 }

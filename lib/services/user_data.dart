@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/services/location.dart';
@@ -18,7 +20,11 @@ class UserData {
   UserData(this.context) {
     update();
 
-    Location().getCurrentPosition().listen((position) {
+    Timer.periodic(const Duration(seconds: 20), (Timer t) {
+      AuthService().user!.reload();
+    });
+
+    LocationHandler().getCurrentPosition(context).listen((position) {
       _lastPostion = position;
     });
   }
@@ -101,7 +107,7 @@ class UserData {
   }
 
   Stream<LatLng> get position {
-    return Location().getCurrentPosition();
+    return LocationHandler().getCurrentPosition(context);
   }
 
   LatLng get lastPosition {

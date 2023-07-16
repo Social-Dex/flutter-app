@@ -230,5 +230,9 @@
     "save": "Save",
     "@save": {
         "description": "Text for save button"
+    },
+    "pleaseVerifyYourEmailAddress": "Please verify your email address",
+    "@verifyYourEmailAddress": {
+        "description": "Prompt for the user to verify their email"
     }
 }
