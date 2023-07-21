@@ -25,6 +25,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
   }
 
   void _onItemTapped(int index) async {
+    if (index == _selectedIndex) return;
+    
     setState(() {
       _selectedIndex = index;
     });

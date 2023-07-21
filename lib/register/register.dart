@@ -241,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 25),
+              padding: const EdgeInsets.only(top: 30),
               child: Row(
                 children: _buildScreenIndicator(context),
               ),

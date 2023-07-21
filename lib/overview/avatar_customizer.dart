@@ -23,14 +23,22 @@ class AvatarCustomizerScreen extends StatelessWidget {
               onPressed: () async {
                 context.loaderOverlay.show();
 
-                profile.avatarSVG =
-                    await FluttermojiFunctions().encodeMySVGtoString();
-                
-                await FirestoreService()
-                    .updateUserProfile(profile)
-                    .then((value) {
-                  Navigator.of(context).pop();
-                  context.loaderOverlay.hide();
+                await FluttermojiFunctions()
+                    .encodeMySVGtoString()
+                    .then((newSVG) async {
+                  if (newSVG != profile.avatarSVG) {
+                    profile.avatarSVG = newSVG;
+
+                    await FirestoreService()
+                        .updateUserProfile(profile)
+                        .then((value) {
+                      Navigator.of(context).pop();
+                      context.loaderOverlay.hide();
+                    });
+                  } else {
+                    Navigator.of(context).pop();
+                    context.loaderOverlay.hide();
+                  }
                 });
               }),
           title: Text(AppLocalizations.of(context)!.avatarCustomization),

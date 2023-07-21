@@ -21,13 +21,15 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final int retryDuration = 30;
   int retryCooldownSec = 0;
 
+  late Timer timer;
+
   @override
   initState() {
     super.initState();
 
     retryCooldownSec = retryCooldownSec;
 
-    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       AuthService().user!.reload().then((_) {
         if (AuthService().user!.emailVerified) {
           widget.refresh();
@@ -40,6 +42,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         retryCooldownSec--;
       });
     });
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+
+    timer.cancel();
   }
 
   @override

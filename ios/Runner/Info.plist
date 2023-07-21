@@ -48,15 +48,8 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 
-
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>This app needs access to location when in the background.</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
+		<key>NSLocationUsageDescription</key>
 		<string>This app needs access to location when open.</string>
-		<key>UIBackgroundModes</key>
-		<array>
-		<string>location</string>
-		</array>
 
 		<key>UIStatusBarHidden</key>
 		<false/>

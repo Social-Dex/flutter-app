@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:rxdart/rxdart.dart';
 import 'package:app/services/auth.dart';
 import 'package:app/services/models.dart';
+import 'package:latlong2/latlong.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -26,11 +27,40 @@ class FirestoreService {
     return ref.set(data, SetOptions(merge: true));
   }
 
-  Future<UserProfile> getUserProfile() async {
+  Future<UserProfile> getUserProfile({String? userId}) async {
     var user = AuthService().user!;
-    var ref = _db.collection('users').doc(user.uid);
+    userId ??= user.uid;
+
+    var ref = _db.collection('users').doc(userId);
     var snapshot = await ref.get();
-    
+
     return UserProfile.fromJson(snapshot.data() ?? {});
+  }
+
+  Future<UsersOnMap> getUserPositions() async {
+    var user = AuthService().user!;
+
+    var ref = _db.collection('location').doc('tmp');
+    var snapshot = await ref.get();
+
+    if (snapshot.data() == null) return UsersOnMap();
+
+    UsersOnMap map = UsersOnMap(
+        users: snapshot.data()!.map((key, value) {
+      var pos = value['position'] ?? const LatLng(0, 0);
+      LatLng latLng = LatLng(pos.latitude, pos.longitude);
+
+      return MapEntry(
+          key,
+          UserMapData(
+            position: latLng,
+            avatarSVG: value['avatarSVG'],
+            status: value['status'],
+          ));
+    }));
+
+    map.users!.remove(user.uid);
+
+    return map;
   }
 }

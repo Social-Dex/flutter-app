@@ -15,27 +15,48 @@ class UserData {
   final BuildContext context;
   late UserProfile _profile;
   late User _authData;
+  final LocationHandler _locationHandler = LocationHandler();
   LatLng _lastPostion = const LatLng(0, 0);
+
+  late Timer timer;
+
+  late Map<String,UserMapData> _userPositions;
 
   UserData(this.context) {
     update();
 
-    Timer.periodic(const Duration(seconds: 20), (Timer t) {
-      AuthService().user!.reload();
+    FirestoreService().getUserPositions().then((positions) {
+      _userPositions = positions.users ?? <String, UserMapData>{};
     });
 
-    LocationHandler().getCurrentPosition(context).listen((position) {
+    timer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
+      if (AuthService().user == null) {
+        timer.cancel();
+      } else {
+        update();
+      }
+    });
+
+    _locationHandler.getCurrentPosition(context).listen((position) {
       _lastPostion = position;
     });
   }
 
   Future<void> update() async {
+    AuthService().user!.reload();
+
     _profile = await FirestoreService().getUserProfile();
     _authData = AuthService().user!;
 
     if (_profile.avatarSVG == '') {
       _profile.avatarSVG = await FluttermojiFunctions().encodeMySVGtoString();
     }
+  }
+
+  Future<void> updateUserPositions() async {
+    FirestoreService().getUserPositions().then((positions) {
+      _userPositions = positions.users ?? <String, UserMapData>{};
+    });
   }
 
   UserProfile get profile {
@@ -107,7 +128,7 @@ class UserData {
   }
 
   Stream<LatLng> get position {
-    return LocationHandler().getCurrentPosition(context);
+    return _locationHandler.getCurrentPosition(context);
   }
 
   LatLng get lastPosition {
@@ -124,5 +145,9 @@ class UserData {
 
   String get statusText {
     return _profile.statusText;
+  }
+
+  Map<String,UserMapData> get userPositions {
+    return _userPositions;
   }
 }

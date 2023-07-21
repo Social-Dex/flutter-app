@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:latlong2/latlong.dart';
 part 'models.g.dart';
 
 @JsonSerializable()
@@ -31,6 +32,35 @@ class UserProfile {
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 }
 
+@JsonSerializable()
+class UsersOnMap {
+  Map<String,UserMapData>? users;
+
+  UsersOnMap({this.users});
+
+  factory UsersOnMap.fromJson(Map<String, dynamic> json) =>
+      _$UsersOnMapFromJson(json);
+  Map<String, dynamic> toJson() => _$UsersOnMapToJson(this);
+}
+
+@JsonSerializable()
+class UserMapData {
+  LatLng position;
+  String avatarSVG;
+  String status;
+
+  UserMapData({
+    this.position = const LatLng(0,0),
+    this.avatarSVG =
+        '{"topType":24,"accessoriesType":0,"hairColor":1,"facialHairType":0,"facialHairColor":1,"clotheType":4,"eyeType":6,"eyebrowType":10,"mouthType":8,"skinColor":3,"clotheColor":8,"style":0,"graphicType":0}',
+    this.status = 'inactive',
+  });
+
+  factory UserMapData.fromJson(Map<String, dynamic> json) =>
+      _$UserMapDataFromJson(json);
+  Map<String, dynamic> toJson() => _$UserMapDataToJson(this);
+}
+
 class UserStatus {
   static UserStatusScheme get approachable =>
       UserStatusScheme(name: 'approachable', color: Colors.green[600]!);
@@ -40,9 +70,9 @@ class UserStatus {
       UserStatusScheme(name: 'inactive', color: Colors.yellow[700]!);
   static UserStatusScheme get hidden =>
       const UserStatusScheme(name: 'hidden', color: Colors.transparent);
-  
+
   static UserStatusScheme getProp(String property) {
-    switch(property) {
+    switch (property) {
       case 'approachable':
         return approachable;
       case 'reserved':

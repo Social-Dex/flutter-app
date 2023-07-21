@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 60, right: 60, top: 30),
+              padding: const EdgeInsets.only(left: 60, right: 60, top: 35),
               child: Row(
                 children: [
                   IconButton(
@@ -82,7 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Spacer(),
                   UserAvatar(
                     svg: '',
-                    backgroundColor: Theme.of(context).canvasColor,
                     statusColor: widget.userData.statusColor,
                     onPress: _onAvatarPress,
                   ),
@@ -279,7 +278,7 @@ class ProfileDisplayValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -391,7 +390,7 @@ class EditBio extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.1,
+        maxHeight: MediaQuery.of(context).size.height * 0.2,
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,

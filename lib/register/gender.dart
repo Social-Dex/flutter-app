@@ -83,7 +83,7 @@ class _GenderScreenState extends State<GenderScreen> {
       ),
       gender == 'other'
           ? Padding(
-              padding: const EdgeInsets.only(top: 25),
+              padding: const EdgeInsets.only(top: 30),
               child: SizedBox(
                 width: 300,
                 child: TextFormField(

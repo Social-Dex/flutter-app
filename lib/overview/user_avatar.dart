@@ -7,13 +7,11 @@ class UserAvatar extends StatelessWidget {
   final String svg;
   final Color statusColor;
   final Function onPress;
-  final Color backgroundColor;
 
   const UserAvatar({
     super.key,
     this.scale = 1,
     this.svg = '',
-    this.backgroundColor = Colors.transparent,
     required this.statusColor,
     required this.onPress,
   });
@@ -26,19 +24,8 @@ class UserAvatar extends StatelessWidget {
           width: 116 * scale,
           height: 116 * scale,
           decoration: BoxDecoration(
-            color: statusColor,
+            border: Border.all(color: statusColor, width: 4),
             shape: BoxShape.circle,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(4 * scale),
-          child: Container(
-            width: 108 * scale,
-            height: 108 * scale,
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              shape: BoxShape.circle,
-            ),
           ),
         ),
         svg != ''

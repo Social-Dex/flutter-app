@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:app/services/auth.dart';
+import 'package:app/services/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/shared/shared.dart';
@@ -28,10 +32,65 @@ class _MapScreenState extends State<MapScreen> {
       'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
   final String apiKey = '6ee70282-81f7-499d-be1d-5b0e70fbbea1';
 
+  late Timer timer;
+
+  @override
+  initState() {
+    super.initState();
+
+    timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+      if (AuthService().user == null) {
+        timer.cancel();
+      } else {
+          widget.userData.updateUserPositions().then((value) {
+            setState(() {});
+          });
+      }
+    });
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+
+    timer.cancel();
+  }
+
+
+  List<Marker> getUsers() {
+    List<Marker> users = [];
+
+    widget.userData.userPositions.forEach((key, value) {
+      users.add(Marker(
+          point: value.position,
+          width: 90,
+          height: 90,
+          builder: (context) => UserAvatar(
+              statusColor: UserStatus.getProp(value.status).color,
+              svg: value.avatarSVG,
+              onPress: () {
+                print(key);
+              })));
+    });
+
+    users.add(
+      Marker(
+        point: widget.userData.lastPosition,
+        width: 90,
+        height: 90,
+        builder: (context) => UserAvatar(
+            statusColor: Colors.transparent,
+            onPress: widget.onOwnMapAvatarPressed),
+      ),
+    );
+
+    return users;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
       child: FutureBuilder<Object>(
         future: LocationHandler().handleLocationPermission(context),
         builder: (context, snapshot) {
@@ -87,23 +146,16 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                         MarkerLayer(
                           rotate: true,
-                          markers: [
-                            Marker(
-                              point: widget.userData.lastPosition,
-                              width: 90,
-                              height: 90,
-                              builder: (context) => UserAvatar(
-                                  statusColor: Colors.transparent,
-                                  onPress: widget.onOwnMapAvatarPressed),
-                            ),
-                          ],
+                          markers: getUsers(),
                         ),
                       ],
                     );
                   }
                   return const Loader();
                 });
-          } else if (snapshot.data == false) {
+          } else if (snapshot.data == false ||
+              snapshot.data == const LatLng(0, 0) ||
+              snapshot.error != null) {
             return Center(
               child: Column(
                 children: [
