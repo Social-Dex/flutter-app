@@ -28,7 +28,7 @@ class SettingsScreen extends StatelessWidget {
                   onPressed: () {
                     context.loaderOverlay.show();
 
-                    AuthService().signOut().then((value) {
+                    AuthService().signOut().then((_) {
                       Location().enableBackgroundMode(enable: false);
                       
                       context.loaderOverlay.hide();

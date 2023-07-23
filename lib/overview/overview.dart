@@ -17,8 +17,14 @@ class _OverviewScreenState extends State<OverviewScreen> {
   late final UserData _userData;
   int _selectedIndex = 1;
 
-  Future<UserData> _gatherUserData() async {
+@override
+  initState() {
+    super.initState();
+
     _userData = UserData(context);
+  }
+
+  Future<UserData> _gatherUserData() async {
     await _userData.update();
     
     return _userData;

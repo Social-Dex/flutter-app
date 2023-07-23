@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       email: email.toLowerCase(),
                       password: password,
                     )
-                        .then((value) {
+                        .then((_) {
                       Navigator.pop(context);
                       context.loaderOverlay.hide();
                     });

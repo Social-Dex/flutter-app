@@ -6,6 +6,7 @@ import 'package:app/services/user_data.dart';
 import 'package:app/overview/avatar_customizer.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:app/overview/edit_profile_value.dart';
+import 'package:app/overview/profile_display_value.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserData userData;
@@ -115,6 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   physics: const ClampingScrollPhysics(),
                   children: [
                     ProfileDisplayValue(
+                      editable: true,
                       label: AppLocalizations.of(context)!.occupation,
                       value: widget.userData.occupation,
                       onTap: () {
@@ -126,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     ProfileDisplayValue(
+                      editable: true,
                       label: AppLocalizations.of(context)!.relationshipStatus,
                       value: widget.userData.relationshipStatus,
                       onTap: () {
@@ -136,6 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     ProfileDisplayValue(
+                      editable: true,
                       label: AppLocalizations.of(context)!.biography,
                       value: widget.userData.bio,
                       onTap: () {
@@ -173,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   FirestoreService()
                       .updateUserProfile(widget.userData.profile)
-                      .then((value) {
+                      .then((_) {
                     setState(() {
                       showEditOccupation = false;
                       context.loaderOverlay.hide();
@@ -208,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   FirestoreService()
                       .updateUserProfile(widget.userData.profile)
-                      .then((value) {
+                      .then((_) {
                     setState(() {
                       showEditRelationshipStatus = false;
                       context.loaderOverlay.hide();
@@ -245,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   FirestoreService()
                       .updateUserProfile(widget.userData.profile)
-                      .then((value) {
+                      .then((_) {
                     setState(() {
                       showEditBio = false;
                       context.loaderOverlay.hide();
@@ -259,53 +263,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               )
             : Container(),
       ],
-    );
-  }
-}
-
-class ProfileDisplayValue extends StatelessWidget {
-  final String label;
-  final String value;
-  final Function onTap;
-
-  const ProfileDisplayValue({
-    super.key,
-    required this.label,
-    required this.value,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              color: Colors.black26,
-            ),
-            child: Row(
-              children: [
-                Text(value),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  splashColor: Colors.deepPurple,
-                  onPressed: () {
-                    onTap();
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -327,7 +284,7 @@ class EditOccupation extends StatelessWidget {
         labelText: AppLocalizations.of(context)!.occupation,
       ),
       textCapitalization: TextCapitalization.words,
-      maxLength: 25,
+      maxLength: 30,
       maxLines: 1,
       controller: controller,
       focusNode: focusNode,

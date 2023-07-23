@@ -18,24 +18,35 @@ class UserData {
   final LocationHandler _locationHandler = LocationHandler();
   LatLng _lastPostion = const LatLng(0, 0);
 
-  late Timer timer;
+  late Timer updateTimer;
+  // late Timer posTimer;
 
-  late Map<String,UserMapData> _userPositions;
+  late Map<String, UserMapData> _userPositions = <String, UserMapData>{};
 
   UserData(this.context) {
-    update();
+    update().then((_) {
+      // FirestoreService().updateUserPositionMetadata(_profile); // TODO nach Firbase Plan Upgrade
+    });
 
     FirestoreService().getUserPositions().then((positions) {
       _userPositions = positions.users ?? <String, UserMapData>{};
     });
 
-    timer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
+    updateTimer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
       if (AuthService().user == null) {
-        timer.cancel();
+        updateTimer.cancel();
       } else {
         update();
       }
     });
+
+    // posTimer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+    //   if (AuthService().user == null) {
+    //     posTimer.cancel();
+    //   } else {
+    //     saveUserPosition();
+    //   }
+    // });
 
     _locationHandler.getCurrentPosition(context).listen((position) {
       _lastPostion = position;
@@ -43,8 +54,6 @@ class UserData {
   }
 
   Future<void> update() async {
-    AuthService().user!.reload();
-
     _profile = await FirestoreService().getUserProfile();
     _authData = AuthService().user!;
 
@@ -58,6 +67,10 @@ class UserData {
       _userPositions = positions.users ?? <String, UserMapData>{};
     });
   }
+
+  // Future<void> saveUserPosition() async {
+  //   FirestoreService().updateUserPosition(_lastPostion);
+  // }
 
   UserProfile get profile {
     return _profile;
@@ -147,7 +160,7 @@ class UserData {
     return _profile.statusText;
   }
 
-  Map<String,UserMapData> get userPositions {
+  Map<String, UserMapData> get userPositions {
     return _userPositions;
   }
 }

@@ -49,13 +49,12 @@ class FirestoreService {
         users: snapshot.data()!.map((key, value) {
       var pos = value['position'] ?? const LatLng(0, 0);
       LatLng latLng = LatLng(pos.latitude, pos.longitude);
-
       return MapEntry(
-          key,
+          key.trim(),
           UserMapData(
             position: latLng,
-            avatarSVG: value['avatarSVG'],
-            status: value['status'],
+            avatarSVG: value['avatarSVG'] ?? '{"topType":24,"accessoriesType":0,"hairColor":1,"facialHairType":0,"facialHairColor":1,"clotheType":4,"eyeType":6,"eyebrowType":10,"mouthType":8,"skinColor":3,"clotheColor":8,"style":0,"graphicType":0}',
+            status: value['status'] ?? 'inactive',
           ));
     }));
 

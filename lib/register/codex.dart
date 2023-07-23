@@ -92,7 +92,7 @@ class _CodexScreenState extends State<CodexScreen> {
                   var url =
                       Uri.parse('https://social-dex.com/terms-and-conditions/');
                   await launchUrl(url, mode: LaunchMode.inAppWebView)
-                      .then((value) => context.loaderOverlay.hide());
+                      .then((_) => context.loaderOverlay.hide());
                 },
               ),
               const Spacer(),
@@ -126,7 +126,7 @@ class _CodexScreenState extends State<CodexScreen> {
                   var url =
                       Uri.parse('https://social-dex.com/data-protection/');
                   await launchUrl(url, mode: LaunchMode.inAppWebView)
-                      .then((value) => context.loaderOverlay.hide());
+                      .then((_) => context.loaderOverlay.hide());
                 },
               ),
               const Spacer(),

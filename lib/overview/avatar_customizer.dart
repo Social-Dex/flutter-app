@@ -31,9 +31,15 @@ class AvatarCustomizerScreen extends StatelessWidget {
 
                     await FirestoreService()
                         .updateUserProfile(profile)
-                        .then((value) {
-                      Navigator.of(context).pop();
-                      context.loaderOverlay.hide();
+                        .then((_) {
+
+                      // FirestoreService()
+                      //     .updateUserPositionMetadata(profile)
+                      //     .then((_) {
+
+                        Navigator.of(context).pop();
+                        context.loaderOverlay.hide();
+                      // });
                     });
                   } else {
                     Navigator.of(context).pop();
@@ -50,9 +56,12 @@ class AvatarCustomizerScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
-                  child: FluttermojiCircleAvatar(
-                    radius: 100,
-                    backgroundColor: Colors.transparent,
+                  child: Hero(
+                    tag: 'avatar',
+                    child: FluttermojiCircleAvatar(
+                      radius: 100,
+                      backgroundColor: Colors.transparent,
+                    ),
                   ),
                 ),
                 FluttermojiCustomizer(

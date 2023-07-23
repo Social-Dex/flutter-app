@@ -323,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: email.toLowerCase(), password: password)
-                          .then((value) async {
+                          .then((_) async {
                         userProfile.birthday = birthDate.toString();
                         if (gender != 'other') {
                           userProfile.gender = gender.toLowerCase();
@@ -331,7 +331,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         await FirestoreService()
                             .updateUserProfile(userProfile)
-                            .then((value) {
+                            .then((_) {
                             AuthService().user!.sendEmailVerification();
 
                           context.loaderOverlay.hide();

@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:app/overview/user_view.dart';
 import 'package:app/services/auth.dart';
+import 'package:app/services/firestore.dart';
 import 'package:app/services/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +44,9 @@ class _MapScreenState extends State<MapScreen> {
       if (AuthService().user == null) {
         timer.cancel();
       } else {
-          widget.userData.updateUserPositions().then((value) {
-            setState(() {});
-          });
+        widget.userData.updateUserPositions().then((value) {
+          setState(() {});
+        });
       }
     });
   }
@@ -56,21 +58,38 @@ class _MapScreenState extends State<MapScreen> {
     timer.cancel();
   }
 
-
   List<Marker> getUsers() {
     List<Marker> users = [];
 
     widget.userData.userPositions.forEach((key, value) {
       users.add(Marker(
-          point: value.position,
-          width: 90,
-          height: 90,
-          builder: (context) => UserAvatar(
-              statusColor: UserStatus.getProp(value.status).color,
-              svg: value.avatarSVG,
-              onPress: () {
-                print(key);
-              })));
+        point: value.position,
+        width: 90,
+        height: 90,
+        builder: (context) => UserAvatar(
+            heroTag: 'avatar-$key',
+            statusColor: UserStatus.getProp(value.status).color,
+            svg: value.avatarSVG,
+            onPress: () {
+              FirestoreService()
+                  .getUserProfile(userId: key)
+                  .then((userProfile) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => UserView(
+                      userId: key,
+                      avatarSVG: value.avatarSVG,
+                      statusColor: UserStatus.getProp(
+                        value.status,
+                      ).color,
+                      userProfile: userProfile,
+                      userData: widget.userData,
+                    ),
+                  ),
+                );
+              });
+            }),
+      ));
     });
 
     users.add(
