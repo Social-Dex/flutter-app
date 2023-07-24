@@ -253,8 +253,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
-              const Spacer(),
-              const Spacer(),
               Visibility(
                 visible: _curScreen != 1,
                 child: ElevatedButton(
@@ -333,8 +331,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             .updateUserProfile(userProfile)
                             .then((_) {
                             AuthService().user!.sendEmailVerification();
-
-                          context.loaderOverlay.hide();
                         });
                       });
                     } on FirebaseAuthException catch (e) {

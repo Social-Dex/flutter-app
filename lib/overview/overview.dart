@@ -5,6 +5,7 @@ import 'package:app/services/user_data.dart';
 import 'package:app/overview/connections.dart';
 import 'package:app/overview/map.dart';
 import 'package:app/overview/profile.dart';
+import 'package:app/services/models.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({super.key});
@@ -14,20 +15,16 @@ class OverviewScreen extends StatefulWidget {
 }
 
 class _OverviewScreenState extends State<OverviewScreen> {
-  late final UserData _userData;
+  late final UserData _userData = UserData(context);
   int _selectedIndex = 1;
 
 @override
   initState() {
     super.initState();
-
-    _userData = UserData(context);
   }
 
-  Future<UserData> _gatherUserData() async {
-    await _userData.update();
-    
-    return _userData;
+  Future<UserProfile> _gatherUserData() async {
+    return _userData.update();
   }
 
   void _onItemTapped(int index) async {

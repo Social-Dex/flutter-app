@@ -26,18 +26,18 @@ class UserData {
   UserData(this.context) {
     update().then((_) {
       // FirestoreService().updateUserPositionMetadata(_profile); // TODO nach Firbase Plan Upgrade
+
+      updateTimer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
+        if (AuthService().user == null) {
+          updateTimer.cancel();
+        } else {
+          update();
+        }
+      });
     });
 
     FirestoreService().getUserPositions().then((positions) {
       _userPositions = positions.users ?? <String, UserMapData>{};
-    });
-
-    updateTimer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
-      if (AuthService().user == null) {
-        updateTimer.cancel();
-      } else {
-        update();
-      }
     });
 
     // posTimer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
@@ -53,13 +53,16 @@ class UserData {
     });
   }
 
-  Future<void> update() async {
+  Future<UserProfile> update() async {
+    await AuthService().user!.reload();
     _profile = await FirestoreService().getUserProfile();
     _authData = AuthService().user!;
 
     if (_profile.avatarSVG == '') {
       _profile.avatarSVG = await FluttermojiFunctions().encodeMySVGtoString();
     }
+
+    return _profile;
   }
 
   Future<void> updateUserPositions() async {

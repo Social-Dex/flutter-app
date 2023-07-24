@@ -79,13 +79,12 @@ class _CodexScreenState extends State<CodexScreen> {
               Text(
                 AppLocalizations.of(context)!.iAcceptThe,
                 textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14),
               ),
               TextButton(
-                child: Row(
-                  children: [
-                    Text(AppLocalizations.of(context)!.termsAndConditions),
-                    const Icon(Icons.open_in_new_rounded, color: Colors.teal),
-                  ],
+                child: Text(
+                  AppLocalizations.of(context)!.termsAndConditions,
+                  style: const TextStyle(fontSize: 14),
                 ),
                 onPressed: () async {
                   context.loaderOverlay.show();
@@ -113,13 +112,12 @@ class _CodexScreenState extends State<CodexScreen> {
               Text(
                 AppLocalizations.of(context)!.iAcceptThe,
                 textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14),
               ),
               TextButton(
-                child: Row(
-                  children: [
-                    Text(AppLocalizations.of(context)!.dataProtectionAgreement),
-                    const Icon(Icons.open_in_new_rounded, color: Colors.teal),
-                  ],
+                child: Text(
+                  AppLocalizations.of(context)!.dataProtectionAgreement,
+                  style: const TextStyle(fontSize: 14),
                 ),
                 onPressed: () async {
                   context.loaderOverlay.show();

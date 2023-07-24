@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 60, right: 60, top: 35),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 35),
               child: Row(
                 children: [
                   IconButton(
@@ -79,7 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     icon: const Icon(Icons.settings),
                   ),
-                  const Spacer(),
                   const Spacer(),
                   UserAvatar(
                     svg: '',
@@ -91,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(widget.userData.name,
+                          softWrap: true,
                           style: Theme.of(context).textTheme.titleLarge),
                       Row(
                         children: [
@@ -103,7 +103,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  const Spacer(),
                   const Spacer(),
                 ],
               ),

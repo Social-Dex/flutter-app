@@ -67,7 +67,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             size: 200,
             color: Colors.blue[300],
           ),
-          Text(AppLocalizations.of(context)!.pleaseVerifyYourEmailAddress),
+          Text(
+            '${AppLocalizations.of(context)!.pleaseVerifyYourEmailAddress}\n"${AuthService().user!.email}"',
+            textAlign: TextAlign.center,
+          ),
           const Spacer(),
           ElevatedButton(
             style: retryCooldownSec != 0

@@ -13,15 +13,15 @@ class FirestoreService {
     var ref = _db.collection('users').doc(user.uid);
 
     var data = {
-      'name': userProfile.name,
+      'name': userProfile.name.trim(),
       'birthday': userProfile.birthday.toString(),
-      'gender': userProfile.gender,
-      'occupation': userProfile.occupation,
+      'gender': userProfile.gender.trim(),
+      'occupation': userProfile.occupation.trim(),
       'isInRelationship': userProfile.isInRelationship,
-      'bio': userProfile.bio,
+      'bio': userProfile.bio.trim(),
       'avatarSVG': userProfile.avatarSVG,
       'status': userProfile.status,
-      'statusText': userProfile.statusText,
+      'statusText': userProfile.statusText.trim(),
     };
 
     return ref.set(data, SetOptions(merge: true));
