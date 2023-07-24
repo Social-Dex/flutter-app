@@ -2,7 +2,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app/services/auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:location/location.dart';
+import 'package:app/shared/shared.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -10,6 +10,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: const Loader(),
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings)),
         body: Padding(
@@ -29,9 +31,6 @@ class SettingsScreen extends StatelessWidget {
                     context.loaderOverlay.show();
 
                     AuthService().signOut().then((_) {
-                      Location().enableBackgroundMode(enable: false);
-                      
-                      context.loaderOverlay.hide();
                       Navigator.of(context).pop();
                     });
                   },
